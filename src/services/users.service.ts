@@ -277,8 +277,8 @@ export class UsersService {
       throw new HttpException("User not found", HttpStatus.NOT_FOUND);
     }
     return {
-      userId: result.user.userId,
-      refresh_token: result.user.currentHashedRefreshToken,
+      userId: result.userId,
+      refresh_token: result.currentHashedRefreshToken,
     };
   }
 

@@ -91,14 +91,14 @@ export class JournalEntryService {
                     }).getCount()
                 }),
                 of({
-                    moodEntityId: MoodEntityEnum.FELLING_HAPPY.toString(),
+                    moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
                         dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FELLING_HAPPY.toString(),
+                        moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     }).getCount()
                 }),
                 of({
@@ -113,14 +113,14 @@ export class JournalEntryService {
                     }).getCount()
                 }),
                 of({
-                    moodEntityId: MoodEntityEnum.FELLING_SAD.toString(),
+                    moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
                         dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FELLING_SAD.toString(),
+                        moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     }).getCount()
                 }),
                 of({
@@ -137,6 +137,7 @@ export class JournalEntryService {
             ]
         ).toPromise();
         list.sort(function(a, b){return Number(a.moodEntityId) - Number(b.moodEntityId)});
+        
         const sum = list.map(x=>x.count).reduce((accc, n) => {
             return accc + n;
         } , 0);
@@ -145,7 +146,11 @@ export class JournalEntryService {
         }) //
         const mood = await this.journalEntryRepo.manager.findOneBy(MoodEntity, {
             moodEntityId: max.count > 0 ? max.moodEntityId : MoodEntityEnum.I_AM_GOOD.toString()
-        })
+        });
+
+        const totalMood = list.filter(x=>x.moodEntityId === mood.moodEntityId).map(x=>x.count).reduce((accc, n) => {
+            return accc + n;
+        } , 0);
         
         const lastEntry: JournalEntry = await this.journalEntryRepo.manager
         .createQueryBuilder("JournalEntry", "je")
@@ -173,8 +178,7 @@ export class JournalEntryService {
             timestamp: lastEntry ? lastEntry.timestamp : null,
             heartRate: lastEntry ? lastEntry.heartRateLog.value : null,
             ...heartRateStatus,
-            // activities: getMostActivities.sort((a,b) => b.count-a.count).slice(0,5),
-            moodPercent: sum > 0 ? Math.round((((max.count /sum) * 100) + Number.EPSILON) * 100) / 100 : 100
+            moodPercent: totalMood >= sum ? 100 : (sum > 0 ? round((max.count /sum)) : 100)
         };
       } catch (e) {
         console.log(e);
@@ -208,7 +212,7 @@ export class JournalEntryService {
             "es.entityStatusId = :entityStatusId AND " +
             "me.moodEntityId = :moodEntityId"
         );
-        const result = await forkJoin(
+        let result = await forkJoin(
             [
                 of({
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
@@ -222,14 +226,14 @@ export class JournalEntryService {
                     }).getCount()
                 }),
                 of({
-                    moodEntityId: MoodEntityEnum.FELLING_HAPPY.toString(),
+                    moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
                         dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FELLING_HAPPY.toString(),
+                        moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     }).getCount()
                 }),
                 of({
@@ -244,14 +248,14 @@ export class JournalEntryService {
                     }).getCount()
                 }),
                 of({
-                    moodEntityId: MoodEntityEnum.FELLING_SAD.toString(),
+                    moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
                         dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FELLING_SAD.toString(),
+                        moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     }).getCount()
                 }),
                 of({
@@ -276,10 +280,21 @@ export class JournalEntryService {
         const mood = await this.journalEntryRepo.manager.findOneBy(MoodEntity, {
             moodEntityId: max.count > 0 ? max.moodEntityId : MoodEntityEnum.I_AM_GOOD.toString()
         })
+
+        const totalMood = result.filter(x=>x.moodEntityId === mood.moodEntityId).map(x=>x.count).reduce((accc, n) => {
+            return accc + n;
+        } , 0);
+        const formattedResult = result.map(x=> {
+          const moodPercent = x.count >= sum ? 100 : (sum > 0 ? round((x.count / sum)) : 100)
+          return {
+            ...x,
+            moodPercent
+          };
+        });
         return {
-            result,
-            ...mood, 
-            moodPercent: sum > 0 ? round((max.count /sum)) / 100 : 100
+          result: formattedResult,
+          ...mood, 
+          moodPercent: totalMood >= sum ? 100 : (sum > 0 ? round((max.count / sum)) : 100)
         };
       } catch (e) {
         console.log(e);

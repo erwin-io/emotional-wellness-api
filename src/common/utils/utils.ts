@@ -56,7 +56,7 @@ export const addHours = (numOfHours, date: Date) => {
 };
 
 export const round = (number) => {
-  return Math.round((number + Number.EPSILON) * 100) / 100;
+  return Math.round((number + Number.EPSILON) * 100);
 };
 
 export const getHearRateTargetPercentage = (age, value: number) => {
