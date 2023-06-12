@@ -13,6 +13,8 @@ import * as Joi from "@hapi/joi";
 import { UserActivityLogModule } from './controller/user-activity-log/user-activity-log.module';
 import { JournalEntryModule } from "./controller/journal-entry/journal-entry.module";
 import { HeartRateLogModule } from './controller/heart-rate-log/heart-rate-log.module';
+import { MoodSentimentService } from './services/mood-sentiment.service';
+import { MoodSentimentModule } from './controller/mood-sentiment/mood-sentiment.module';
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 @Module({
   imports: [
@@ -31,7 +33,8 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     FirebaseProviderModule,
     UserActivityLogModule,
     JournalEntryModule,
-    HeartRateLogModule
+    HeartRateLogModule,
+    MoodSentimentModule
   ],
   providers: [AppService],
   controllers: [],
