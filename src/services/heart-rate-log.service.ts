@@ -108,7 +108,7 @@ export class HeartRateLogService {
         async (entityManager) => {
           let heartRateLog = new HeartRateLog();
           const date = new Date(moment(new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
-          const find = await this.findByDate(userId, date, date);
+          const find = await this.findByDate(userId, new Date(date.toUTCString()), new Date(date.toUTCString()));
           if(find && find.length > 0) {
             heartRateLog = find[0];
             heartRateLog.timestamp = date;

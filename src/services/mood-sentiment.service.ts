@@ -48,7 +48,7 @@ export class MoodSentimentService {
     }
 
     private async translateToEnglish(text: string) {
-        const target = "fil-ph";
+        const target = "ceb";
         const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + target + "&tl=en&dt=t&q=" + text;
         const result = await firstValueFrom(
           this.httpService

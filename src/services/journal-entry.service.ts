@@ -177,6 +177,7 @@ export class JournalEntryService {
             ...mood,
             timestamp: lastEntry ? lastEntry.timestamp : null,
             heartRate: lastEntry ? lastEntry.heartRateLog.value : null,
+            lastHeartRateLogId: lastEntry ? lastEntry.heartRateLog.heartRateLogId : null,
             ...heartRateStatus,
             moodPercent: totalMood >= sum ? 100 : (sum > 0 ? round((max.count /sum)) : 100)
         };
