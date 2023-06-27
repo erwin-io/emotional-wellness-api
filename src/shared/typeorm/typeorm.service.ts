@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable prettier/prettier */
 import { EntityStatus } from "../entities/EntityStatus";
 import { Gender } from "../entities/Gender";
 import { Users } from "../entities/Users";
