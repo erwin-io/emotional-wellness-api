@@ -35,8 +35,8 @@ export class UserActivityLogController {
         userTypeId.toString(),
         activityTypeId.toString().split(","),
         name,
-        new Date(moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD")),
-        new Date(moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD"))
+        new Date(moment(dateFrom).format("YYYY-MM-DD")),
+        new Date(moment(dateTo).format("YYYY-MM-DD"))
       );
       res.success = true;
       return res;

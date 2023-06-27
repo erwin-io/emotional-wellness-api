@@ -18,10 +18,6 @@ export class DashboardController {
   async get(@Param("date") date: Date) {
     const res: CustomResponse = {};
     try {
-      // date = date??new Date();
-      // const daysOfAWeek = Array(7).fill(new Date(date)).map((el, idx) =>
-      //     moment(new Date(el.setDate(el.getDate() - el.getDay() + idx)), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD"))
-      // res.data = daysOfAWeek;
       res.success = true;
       return res;
     } catch (e) {

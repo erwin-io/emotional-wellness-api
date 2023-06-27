@@ -64,8 +64,8 @@ export class HeartRateLogService {
         )
         .orderBy("hrl.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
             userId
         })
         .getMany() as any;
@@ -107,7 +107,7 @@ export class HeartRateLogService {
       return await this.heartRateLogRepo.manager.transaction(
         async (entityManager) => {
           let heartRateLog = new HeartRateLog();
-          const date = new Date(moment(new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+          const date = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
           const find = await this.findByDate(userId, new Date(date.toUTCString()), new Date(date.toUTCString()));
           if(find && find.length > 0) {
             heartRateLog = find[0];

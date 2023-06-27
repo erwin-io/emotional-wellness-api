@@ -34,8 +34,8 @@ export class UserActivityLogService {
         };
         dateFrom = new Date(dateFrom.setHours(0,0,0,0));
         dateTo = new Date(new Date(dateTo.setDate(dateFrom.getDate() + 1)).setHours(0,0,0,0));
-        params.dateFrom = moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss");
-        params.dateTo = moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss");
+        params.dateFrom = moment(dateFrom).format("YYYY-MM-DD HH:mm:ss");
+        params.dateTo = moment(dateTo).format("YYYY-MM-DD HH:mm:ss");
         const query = await this.userActivityLogRepo.manager
         .createQueryBuilder("UserActivityLog", "al")
         .leftJoinAndSelect("al.userActivityType", "at")
@@ -65,7 +65,7 @@ export class UserActivityLogService {
 
     async log(userActivityTypeId: string, userId: string, date: Date, os: string, osVersion: string, browser: string) {
       try {
-        date = new Date(moment(date, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+        date = new Date(moment(date).format("YYYY-MM-DD HH:mm:ss"));
         return await this.userActivityLogRepo.manager.transaction(async (entityManager) => {
             //login
             if(Number(userActivityTypeId) === Number(ActivityTypeEnum.USER_LOGIN)) {

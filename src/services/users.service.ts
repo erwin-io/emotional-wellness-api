@@ -150,7 +150,7 @@ export class UsersService {
       user.lastName = userDto.lastName;
       user.email = userDto.email;
       user.mobileNumber = userDto.mobileNumber;
-      user.birthDate = moment(userDto.birthDate, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
+      user.birthDate = moment(userDto.birthDate).format("YYYY-MM-DD");
       user.age = await (await getAge(new Date(userDto.birthDate))).toString();
       user.address = userDto.address;
       user.gender = new Gender();

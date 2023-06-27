@@ -45,8 +45,8 @@ export class JournalEntryService {
         )
         .orderBy("je.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString()
         })
@@ -61,7 +61,7 @@ export class JournalEntryService {
   
     async getDateSummary(userId: string = "0", date: Date) {
       try {
-        const localDate = new Date(moment(date, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+        const localDate = new Date(moment(date).format("YYYY-MM-DD HH:mm:ss"));
 
         const dateFrom = new Date(new Date(localDate).setHours(0,0,0,0));
         const dateTo = new Date(new Date(new Date(localDate).setDate(new Date(localDate).getDate() + 1)).setHours(0,0,0,0));
@@ -83,8 +83,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.AMAZING.toString(),
@@ -94,8 +94,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
@@ -105,8 +105,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
@@ -116,8 +116,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
@@ -127,8 +127,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.ANGRY.toString(),
@@ -164,8 +164,8 @@ export class JournalEntryService {
             "me.moodEntityId = :moodEntityId "
         )
         .setParameters({
-            dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString(),
             moodEntityId: mood.moodEntityId
@@ -190,7 +190,7 @@ export class JournalEntryService {
     async getWeeklySummary(userId: string = "0", date: Date) {
       try {
         const d = of([]);
-        const localDate = new Date(moment(date, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+        const localDate = new Date(moment(date).format("YYYY-MM-DD HH:mm:ss"));
 
         const first = localDate.getDate() - localDate.getDay(); // First day is the day of the month - the day of the week
         const last = first + 6; // last day is the first day + 6
@@ -219,8 +219,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.AMAZING.toString(),
@@ -230,8 +230,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
@@ -241,8 +241,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
@@ -252,8 +252,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
@@ -263,8 +263,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.ANGRY.toString(),
@@ -306,11 +306,11 @@ export class JournalEntryService {
     async getWeekly(userId: string = "0", date: Date) {
       try {
 
-        const localDate = new Date(moment(date, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+        const localDate = new Date(moment(date).format("YYYY-MM-DD HH:mm:ss"));
         const daysOfAWeek = Array(7).fill(localDate).map((el, idx) =>
-          moment(new Date(el.setDate(el.getDate() - el.getDay() + idx)), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD"))
+          moment(new Date(el.setDate(el.getDate() - el.getDay() + idx))).format("YYYY-MM-DD"))
         const queryList = daysOfAWeek.map(async x=> {
-            const localDate = new Date(moment(x, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+            const localDate = new Date(moment(x).format("YYYY-MM-DD HH:mm:ss"));
             
             const dateFrom = new Date(new Date(localDate).setHours(0,0,0,0));
             const dateTo = new Date(new Date(localDate.setDate(localDate.getDate() + 1)).setHours(0,0,0,0));
@@ -327,8 +327,8 @@ export class JournalEntryService {
                 "es.entityStatusId = :entityStatusId"
             )
             .setParameters({
-                dateFrom: moment(dateFrom, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
-                dateTo: moment(dateTo, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+                dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
+                dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
                 userId,
                 entityStatusId: EntityStatusEnum.ACTIVE.toString()
             })
@@ -345,7 +345,7 @@ export class JournalEntryService {
             if(!timestamp || timestamp === "") {
                 timestamp = daysOfAWeek[i];
             }
-            x.timestamp = moment(timestamp, DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
+            x.timestamp = moment(timestamp).format("YYYY-MM-DD");
             return x;
         });
       } catch (e) {
@@ -393,7 +393,7 @@ export class JournalEntryService {
         async (entityManager) => {
             let journalEntry = new JournalEntry();
             journalEntry.notes = createJournalEntryDto.notes;
-            journalEntry.timestamp = new Date(moment(createJournalEntryDto.timestamp??new Date()).format("YYYY-MM-DD hh:mm:ss"));
+            journalEntry.timestamp = new Date(moment(createJournalEntryDto.timestamp??new Date()).format("YYYY-MM-DD HH:mm:ss"));
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: createJournalEntryDto.moodEntityId,
             });
@@ -450,7 +450,7 @@ export class JournalEntryService {
                 entityStatus: { entityStatusId: EntityStatusEnum.ACTIVE.toString() }
             });
             journalEntry.notes = dto.notes;
-            journalEntry.timestamp = new Date(moment(new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+            journalEntry.timestamp = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: dto.moodEntityId,
             });
