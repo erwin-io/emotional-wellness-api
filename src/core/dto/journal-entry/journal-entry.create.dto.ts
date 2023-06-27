@@ -24,7 +24,7 @@ export class CreateJournalEntryDto {
     default: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
   })
   @Type(() => Date)
-  @Transform((value) => new Date(value.value))
+  @Transform((value) => moment(new Date(value.value)).format("YYYY-MM-DD HH:mm:ss"))
   timestamp: Date = new Date();
 
   @ApiProperty()
