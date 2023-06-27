@@ -393,7 +393,7 @@ export class JournalEntryService {
         async (entityManager) => {
             let journalEntry = new JournalEntry();
             journalEntry.notes = createJournalEntryDto.notes;
-            journalEntry.timestamp = new Date(moment(createJournalEntryDto.timestamp??new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+            journalEntry.timestamp = new Date(moment(createJournalEntryDto.timestamp??new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD hh:mm:ss"));
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: createJournalEntryDto.moodEntityId,
             });
