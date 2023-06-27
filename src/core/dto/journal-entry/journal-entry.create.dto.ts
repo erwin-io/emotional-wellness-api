@@ -21,11 +21,11 @@ export class CreateJournalEntryDto {
 
   @ApiProperty({
     type: Date,
-    default: moment(new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"),
+    default: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
   })
   @Type(() => Date)
-  @Transform((value) => moment(new Date(value.value), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"))
-  timestamp: Date = new Date(moment(new Date(), DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD HH:mm:ss"));
+  @Transform((value) => moment(new Date(value.value)).format("YYYY-MM-DD HH:mm:ss"))
+  timestamp: Date = new Date();
 
   @ApiProperty()
   @IsNotEmpty()
