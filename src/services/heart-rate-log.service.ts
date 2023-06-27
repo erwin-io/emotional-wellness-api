@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
@@ -64,8 +66,8 @@ export class HeartRateLogService {
         )
         .orderBy("hrl.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment.utc(dateFrom).format(),
+            dateTo: moment.utc(dateTo).format(),
             userId
         })
         .getMany() as any;
@@ -107,7 +109,7 @@ export class HeartRateLogService {
       return await this.heartRateLogRepo.manager.transaction(
         async (entityManager) => {
           let heartRateLog = new HeartRateLog();
-          const date = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+          const date = new Date(moment.utc(new Date()).format());
           const find = await this.findByDate(userId, new Date(date.toUTCString()), new Date(date.toUTCString()));
           if(find && find.length > 0) {
             heartRateLog = find[0];

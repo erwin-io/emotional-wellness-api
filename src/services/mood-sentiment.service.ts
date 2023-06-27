@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom, catchError } from 'rxjs';

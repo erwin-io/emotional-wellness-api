@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
@@ -45,8 +49,8 @@ export class JournalEntryService {
         )
         .orderBy("je.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment.utc(dateFrom).format(),
+            dateTo: moment.utc(dateTo).format(),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString()
         })
@@ -83,8 +87,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.AMAZING.toString(),
@@ -94,8 +98,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
@@ -105,8 +109,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
@@ -116,8 +120,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
@@ -127,8 +131,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.ANGRY.toString(),
@@ -164,8 +168,8 @@ export class JournalEntryService {
             "me.moodEntityId = :moodEntityId "
         )
         .setParameters({
-            dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-            dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+            dateFrom: moment.utc(dateFrom).format(),
+            dateTo: moment.utc(dateTo).format(),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString(),
             moodEntityId: mood.moodEntityId
@@ -219,8 +223,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.AMAZING.toString(),
@@ -230,8 +234,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
@@ -241,8 +245,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
@@ -252,8 +256,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
@@ -263,8 +267,8 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                        dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                        dateFrom: moment.utc(dateFrom).format(),
+                        dateTo: moment.utc(dateTo).format(),
                         userId,
                         entityStatusId: EntityStatusEnum.ACTIVE.toString(),
                         moodEntityId: MoodEntityEnum.ANGRY.toString(),
@@ -327,8 +331,8 @@ export class JournalEntryService {
                 "es.entityStatusId = :entityStatusId"
             )
             .setParameters({
-                dateFrom: moment(dateFrom).format("YYYY-MM-DD HH:mm:ss"),
-                dateTo: moment(dateTo).format("YYYY-MM-DD HH:mm:ss"),
+                dateFrom: moment.utc(dateFrom).format(),
+                dateTo: moment.utc(dateTo).format(),
                 userId,
                 entityStatusId: EntityStatusEnum.ACTIVE.toString()
             })
@@ -450,7 +454,8 @@ export class JournalEntryService {
                 entityStatus: { entityStatusId: EntityStatusEnum.ACTIVE.toString() }
             });
             journalEntry.notes = dto.notes;
-            journalEntry.timestamp = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+            // journalEntry.timestamp = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+            journalEntry.timestamp = new Date(moment.utc(new Date()).format());
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: dto.moodEntityId,
             });
