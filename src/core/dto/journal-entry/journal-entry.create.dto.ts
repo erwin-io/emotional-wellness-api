@@ -21,10 +21,10 @@ export class CreateJournalEntryDto {
 
   @ApiProperty({
     type: Date,
-    default: moment(new Date()).format(),
+    default: moment.utc(new Date()).format(),
   })
   @Type(() => Date)
-  @Transform((value) => moment(new Date(value.value)).format())
+  @Transform((value) => moment.utc(value.value).format())
   timestamp: Date = new Date();
 
   @ApiProperty()
