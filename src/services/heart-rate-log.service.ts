@@ -61,20 +61,17 @@ export class HeartRateLogService {
         const result: HeartRateLog[] = await this.heartRateLogRepo.manager
         .createQueryBuilder("HeartRateLog", "hrl")
         .leftJoin("hrl.user", "u")
-        .where("(hrl.timestamp between :dateFrom AND :dateTo) AND " +
+        .where("((hrl.timestamp  AT TIME ZONE 'Asia/Manila') between :dateFrom AND :dateTo) AND " +
             "u.userId = :userId"
         )
         .orderBy("hrl.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment.utc(dateFrom).format(),
-            dateTo: moment.utc(dateTo).format(),
-            userId
+          dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+          dateTo: moment(dateTo).format('YYYY-MM-DD'),
+          userId
         })
         .getMany() as any;
-        return result.map(x=> {
-          x.timestamp = new Date(x.timestamp.toLocaleString('pht', {timeZone: 'utc'}))
-          return x;
-        });
+        return result;
       } catch (e) {
         console.log(e);
         throw e;
@@ -102,7 +99,6 @@ export class HeartRateLogService {
         if (!heartRateLog) {
           throw new HttpException("Heart RateLog not found", HttpStatus.NOT_FOUND);
         }
-        heartRateLog.timestamp = new Date(heartRateLog.timestamp.toLocaleString('pht', {timeZone: 'utc'}));
         return heartRateLog;
       } catch (e) {
         throw e;
@@ -113,8 +109,7 @@ export class HeartRateLogService {
       return await this.heartRateLogRepo.manager.transaction(
         async (entityManager) => {
           let heartRateLog = new HeartRateLog();
-          const { timeZone } = createHeartRateLogDto.timestamp;
-          const timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
+          const timestamp = await entityManager.query("select (now() AT TIME ZONE 'Asia/Manila'::text) as timestamp").then(res=> {
             return res[0]['timestamp'];
           });
           const find = await this.findByDate(userId, new Date(timestamp.toUTCString()), new Date(timestamp.toUTCString()));

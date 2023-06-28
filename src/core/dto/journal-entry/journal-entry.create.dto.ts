@@ -17,18 +17,18 @@ export class CreateJournalEntryDto {
   @IsNumberString()
   moodEntityId: string;
 
-  @ApiProperty({
-    type: TimestampDto,
-    default: {
-      locale: "en-US",
-      timeZone: "Asia/Manila",
-      date: new Date(),
-    } as TimestampDto
-  })
-  @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => TimestampDto)
-  timestamp: TimestampDto;
+  // @ApiProperty({
+  //   type: TimestampDto,
+  //   default: {
+  //     locale: "en-US",
+  //     timeZone: "Asia/Manila",
+  //     date: new Date(),
+  //   } as TimestampDto
+  // })
+  // @IsNotEmpty()
+  // @ValidateNested()
+  // @Type(() => TimestampDto)
+  // timestamp: TimestampDto;
 
   @ApiProperty()
   @IsNotEmpty()

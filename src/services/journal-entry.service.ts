@@ -49,16 +49,13 @@ export class JournalEntryService {
         )
         .orderBy("je.timestamp", "DESC")
         .setParameters({
-            dateFrom: moment.utc(dateFrom).format(),
-            dateTo: moment.utc(dateTo).format(),
+            dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+            dateTo: moment(dateTo).format('YYYY-MM-DD'),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString()
         })
         .getMany() as any;
-        return result.map(x=> {
-          x.timestamp = new Date(x.timestamp.toLocaleString('pht', {timeZone: 'utc'}))
-          return x;
-        });
+        return result;
       } catch (e) {
         console.log(e);
         throw e;
@@ -90,55 +87,55 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.AMAZING.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.ANGRY.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     }).getCount()
                 })
             ]
@@ -171,8 +168,8 @@ export class JournalEntryService {
             "me.moodEntityId = :moodEntityId "
         )
         .setParameters({
-            dateFrom: moment.utc(dateFrom).format(),
-            dateTo: moment.utc(dateTo).format(),
+            dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+            dateTo: moment(dateTo).format('YYYY-MM-DD'),
             userId,
             entityStatusId: EntityStatusEnum.ACTIVE.toString(),
             moodEntityId: mood.moodEntityId
@@ -183,7 +180,7 @@ export class JournalEntryService {
         const heartRateStatus = lastEntry && lastEntry.user && lastEntry.heartRateLog ? await this.heartRateLogService.getHeartRateStatus(lastEntry.user.userId, Number(lastEntry.heartRateLog.value)) : null;
         return {
             ...mood,
-            timestamp: lastEntry ? new Date(lastEntry.timestamp.toLocaleString('pht', {timeZone: 'utc'})) : null,
+            timestamp: lastEntry ? lastEntry.timestamp : null,
             heartRate: lastEntry ? lastEntry.heartRateLog.value : null,
             lastHeartRateLogId: lastEntry ? lastEntry.heartRateLog.heartRateLogId : null,
             ...heartRateStatus,
@@ -227,55 +224,55 @@ export class JournalEntryService {
                     moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.AMAZING.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.AMAZING.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.FEELING_HAPPY.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.I_AM_GOOD.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.FEELING_SAD.toString(),
                     }).getCount()
                 }),
                 of({
                     moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     count: await query
                     .setParameters({
-                        dateFrom: moment.utc(dateFrom).format(),
-                        dateTo: moment.utc(dateTo).format(),
-                        userId,
-                        entityStatusId: EntityStatusEnum.ACTIVE.toString(),
-                        moodEntityId: MoodEntityEnum.ANGRY.toString(),
+                      dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                      dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                      userId,
+                      entityStatusId: EntityStatusEnum.ACTIVE.toString(),
+                      moodEntityId: MoodEntityEnum.ANGRY.toString(),
                     }).getCount()
                 })]
         ).toPromise();
@@ -328,17 +325,17 @@ export class JournalEntryService {
             .leftJoinAndSelect("je.entityStatus", "es")
             .leftJoinAndSelect("je.moodEntity", "me")
             // .leftJoinAndSelect("je.journalEntryActivities", "jea")
-            .select("(je.timestamp AT TIME ZONE 'utc'::text)", "timestamp")
+            .select("je.timestamp", "timestamp")
             .addSelect("me.moodEntityId", "moodEntityId")
             .where("(je.timestamp between :dateFrom AND :dateTo) AND " +
                 "u.userId = :userId AND " +
                 "es.entityStatusId = :entityStatusId"
             )
             .setParameters({
-                dateFrom: moment.utc(dateFrom).format(),
-                dateTo: moment.utc(dateTo).format(),
-                userId,
-                entityStatusId: EntityStatusEnum.ACTIVE.toString()
+              dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+              dateTo: moment(dateTo).format('YYYY-MM-DD'),
+              userId,
+              entityStatusId: EntityStatusEnum.ACTIVE.toString()
             })
             .orderBy("je.journalEntryId", "DESC")
             .getRawOne();
@@ -351,7 +348,7 @@ export class JournalEntryService {
         return result.map((x:any = {moodEntityId: null } as any, i)=> {
             let { timestamp, moodEntityId } = x;
             if(!timestamp || timestamp === "") {
-                timestamp = new Date(new Date(daysOfAWeek[i]).toLocaleString('pht', { timeZone: 'utc'}))
+                timestamp = daysOfAWeek[i];
             }
             x.timestamp = moment(timestamp).format("YYYY-MM-DD");
             return x;
@@ -390,7 +387,6 @@ export class JournalEntryService {
         if (!journalEntry) {
           throw new HttpException("Journal Entry not found", HttpStatus.NOT_FOUND);
         }
-        journalEntry.timestamp = new Date(journalEntry.timestamp.toLocaleString('pht', { timeZone: 'utc'}))
         return journalEntry;
       } catch (e) {
         throw e;
@@ -402,10 +398,6 @@ export class JournalEntryService {
         async (entityManager) => {
             let journalEntry = new JournalEntry();
             journalEntry.notes = createJournalEntryDto.notes;
-            const { date, locale, timeZone } = createJournalEntryDto.timestamp;
-            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
-              return res[0]['timestamp'];
-            });
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: createJournalEntryDto.moodEntityId,
             });
@@ -423,20 +415,6 @@ export class JournalEntryService {
               throw new HttpException("Heart rate not found", HttpStatus.NOT_FOUND);
             }
             journalEntry = await entityManager.save(JournalEntry, journalEntry);
-            // if(createJournalEntryDto.activityTypeIds && createJournalEntryDto.activityTypeIds.split(",").length > 0) {
-            //     createJournalEntryDto.activityTypeIds.split(",").forEach(async x=> {
-            //         const activityType = await entityManager.findOneBy(ActivityType, {
-            //             activityTypeId: x
-            //         });
-            //         if(activityType) {
-            //             const journalEntryActivity = new JournalEntryActivity()
-            //             journalEntryActivity.activityType = activityType;
-            //             journalEntryActivity.journalEntry = journalEntry;
-            //             await entityManager.save(JournalEntryActivity, journalEntryActivity);
-            //         }
-            //     })
-
-            // }
             return await entityManager.findOne(JournalEntry, {
                 where: {
                     journalEntryId: journalEntry.journalEntryId,
@@ -462,12 +440,6 @@ export class JournalEntryService {
                 entityStatus: { entityStatusId: EntityStatusEnum.ACTIVE.toString() }
             });
             journalEntry.notes = dto.notes;
-            // journalEntry.timestamp = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-            // journalEntry.timestamp = new Date(moment.utc(new Date()).format());
-            const { date, locale, timeZone } = dto.timestamp;
-            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
-              return res[0]['timestamp'];
-            });
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: dto.moodEntityId,
             });
@@ -479,23 +451,6 @@ export class JournalEntryService {
               throw new HttpException("Heart rate not found", HttpStatus.NOT_FOUND);
             }
             journalEntry = await entityManager.save(JournalEntry, journalEntry);
-            // const activityToDelete = journalEntry.journalEntryActivities.map(x=> x.journalEntryActivityId);
-            // if(activityToDelete.length > 0) 
-            //     await this.journalEntryActivityRepo.delete(activityToDelete);
-
-            // if(dto.activityTypeIds && dto.activityTypeIds.split(",").length > 0) {
-            //     dto.activityTypeIds.split(",").forEach(async x=> {
-            //         const activityType = await entityManager.findOneBy(ActivityType, {
-            //             activityTypeId: x
-            //         });
-            //         if(activityType) {
-            //             const journalEntryActivity = new JournalEntryActivity()
-            //             journalEntryActivity.activityType = activityType;
-            //             journalEntryActivity.journalEntry = journalEntry;
-            //             await entityManager.save(JournalEntryActivity, journalEntryActivity)
-            //         }
-            //     })
-            // }
             return await entityManager.findOne(JournalEntry, {
                 where: {
                     journalEntryId: journalEntry.journalEntryId,
@@ -503,9 +458,6 @@ export class JournalEntryService {
                 },
                 relations: {
                     moodEntity: true,
-                    // journalEntryActivities: {
-                    //     activityType: true
-                    // },
                 }
             });
         }
@@ -521,9 +473,6 @@ export class JournalEntryService {
         if (!journalEntry) {
           throw new HttpException("Journal Entry not found", HttpStatus.NOT_FOUND);
         }
-        // const activityToDelete = journalEntry.journalEntryActivities.map(x=> x.journalEntryActivityId);
-        // if(activityToDelete.length > 0) 
-        //     await this.journalEntryActivityRepo.delete(activityToDelete);
         journalEntry.entityStatus.entityStatusId = EntityStatusEnum.DELETED.toString();
         return await this.journalEntryRepo.save(journalEntry);
       } catch (e) {

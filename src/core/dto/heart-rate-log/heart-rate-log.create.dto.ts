@@ -9,16 +9,16 @@ export class CreateHeartRateLogDto {
   @IsNumberString()
   value: string;
   
-  @ApiProperty({
-    type: TimestampDto,
-    default: {
-      locale: "en-US",
-      timeZone: "Asia/Manila",
-      date: new Date(),
-    } as TimestampDto
-  })
-  @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => TimestampDto)
-  timestamp: TimestampDto;
+  // @ApiProperty({
+  //   type: TimestampDto,
+  //   default: {
+  //     locale: "pht",
+  //     timeZone: "Asia/Manila",
+  //     date: new Date(),
+  //   } as TimestampDto
+  // })
+  // @IsNotEmpty()
+  // @ValidateNested()
+  // @Type(() => TimestampDto)
+  // timestamp: TimestampDto;
 }
