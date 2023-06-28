@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { ApiProperty } from "@nestjs/swagger";
 import { Type, Transform } from "class-transformer";
-import { IsDateString, IsNotEmpty, IsNumberString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumberString, ValidateNested } from "class-validator";
 import * as moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
+import { TimestampDto } from "../timestamp/timestamp.dto";
 
 
 export class CreateJournalEntryDto {
@@ -15,17 +17,18 @@ export class CreateJournalEntryDto {
   @IsNumberString()
   moodEntityId: string;
 
-  // @ApiProperty()
-  // @IsOptional()
-  // activityTypeIds: string = "";
-
   @ApiProperty({
-    type: Date,
-    default: moment.utc(new Date()).format(),
+    type: TimestampDto,
+    default: {
+      locale: "en-US",
+      timeZone: "Asia/Manila",
+      date: new Date(),
+    } as TimestampDto
   })
-  @Type(() => Date)
-  @Transform((value) => moment.utc(value.value).format())
-  timestamp: Date = new Date();
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => TimestampDto)
+  timestamp: TimestampDto;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -69,6 +69,7 @@ export class JournalEntryService {
 
         const dateFrom = new Date(new Date(localDate).setHours(0,0,0,0));
         const dateTo = new Date(new Date(new Date(localDate).setDate(new Date(localDate).getDate() + 1)).setHours(0,0,0,0));
+        await this.journalEntryRepo.manager.query("")
         const query = await this.journalEntryRepo.manager
         .createQueryBuilder("JournalEntry", "je")
         .leftJoinAndSelect("je.user", "u")
@@ -397,7 +398,8 @@ export class JournalEntryService {
         async (entityManager) => {
             let journalEntry = new JournalEntry();
             journalEntry.notes = createJournalEntryDto.notes;
-            journalEntry.timestamp = new Date(moment.utc(createJournalEntryDto.timestamp).format());
+            const { date, locale, timeZone } = createJournalEntryDto.timestamp;
+            journalEntry.timestamp = new Date(date.toLocaleString(locale, { timeZone }));
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: createJournalEntryDto.moodEntityId,
             });
