@@ -109,16 +109,19 @@ export class HeartRateLogService {
       return await this.heartRateLogRepo.manager.transaction(
         async (entityManager) => {
           let heartRateLog = new HeartRateLog();
-          const date = new Date(moment.utc(new Date()).format());
-          const find = await this.findByDate(userId, new Date(date.toUTCString()), new Date(date.toUTCString()));
+          const { timeZone } = createHeartRateLogDto.timestamp;
+          const timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
+            return res[0]['timestamp'];
+          });
+          const find = await this.findByDate(userId, new Date(timestamp.toUTCString()), new Date(timestamp.toUTCString()));
           if(find && find.length > 0) {
             heartRateLog = find[0];
-            heartRateLog.timestamp = date;
+            heartRateLog.timestamp = timestamp;
             heartRateLog.value = createHeartRateLogDto.value;
             heartRateLog = await entityManager.save(HeartRateLog, heartRateLog);
           } else {
             heartRateLog = new HeartRateLog();
-            heartRateLog.timestamp = date;
+            heartRateLog.timestamp = timestamp;
             heartRateLog.value = createHeartRateLogDto.value;
             heartRateLog.user = await entityManager.findOneBy(Users,{
                 userId

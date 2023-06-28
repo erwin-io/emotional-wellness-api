@@ -400,8 +400,8 @@ export class JournalEntryService {
             journalEntry.notes = createJournalEntryDto.notes;
             const { date, locale, timeZone } = createJournalEntryDto.timestamp;
             // journalEntry.timestamp = new Date(date.toLocaleString(locale, { timeZone }));
-            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text)").then(res=> {
-              return res[0];
+            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
+              return res[0]['timestamp'];
             });
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: createJournalEntryDto.moodEntityId,
@@ -462,8 +462,8 @@ export class JournalEntryService {
             // journalEntry.timestamp = new Date(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
             // journalEntry.timestamp = new Date(moment.utc(new Date()).format());
             const { date, locale, timeZone } = dto.timestamp;
-            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text)").then(res=> {
-              return res[0];
+            journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
+              return res[0]['timestamp'];
             });
             journalEntry.moodEntity = await entityManager.findOneBy(MoodEntity, {
                 moodEntityId: dto.moodEntityId,
