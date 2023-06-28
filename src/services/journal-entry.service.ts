@@ -55,7 +55,10 @@ export class JournalEntryService {
             entityStatusId: EntityStatusEnum.ACTIVE.toString()
         })
         .getMany() as any;
-        return result;
+        return result.map(x=> {
+          x.timestamp = new Date(x.timestamp.toLocaleString('en', {timeZone: 'Asia/Manila'}))
+          return x;
+        });
       } catch (e) {
         console.log(e);
         throw e;
@@ -69,7 +72,6 @@ export class JournalEntryService {
 
         const dateFrom = new Date(new Date(localDate).setHours(0,0,0,0));
         const dateTo = new Date(new Date(new Date(localDate).setDate(new Date(localDate).getDate() + 1)).setHours(0,0,0,0));
-        await this.journalEntryRepo.manager.query("")
         const query = await this.journalEntryRepo.manager
         .createQueryBuilder("JournalEntry", "je")
         .leftJoinAndSelect("je.user", "u")
@@ -177,10 +179,11 @@ export class JournalEntryService {
         })
         .orderBy("je.timestamp", "DESC")
         .getOne() as any;
+        
         const heartRateStatus = lastEntry && lastEntry.user && lastEntry.heartRateLog ? await this.heartRateLogService.getHeartRateStatus(lastEntry.user.userId, Number(lastEntry.heartRateLog.value)) : null;
         return {
             ...mood,
-            timestamp: lastEntry ? lastEntry.timestamp : null,
+            timestamp: lastEntry ? new Date(lastEntry.timestamp.toLocaleString('en', {timeZone: 'Asia/Manila'})) : null,
             heartRate: lastEntry ? lastEntry.heartRateLog.value : null,
             lastHeartRateLogId: lastEntry ? lastEntry.heartRateLog.heartRateLogId : null,
             ...heartRateStatus,
@@ -325,7 +328,7 @@ export class JournalEntryService {
             .leftJoinAndSelect("je.entityStatus", "es")
             .leftJoinAndSelect("je.moodEntity", "me")
             // .leftJoinAndSelect("je.journalEntryActivities", "jea")
-            .select("je.timestamp", "timestamp")
+            .select("(je.timestamp AT TIME ZONE 'utc'::text)", "timestamp")
             .addSelect("me.moodEntityId", "moodEntityId")
             .where("(je.timestamp between :dateFrom AND :dateTo) AND " +
                 "u.userId = :userId AND " +
@@ -348,7 +351,7 @@ export class JournalEntryService {
         return result.map((x:any = {moodEntityId: null } as any, i)=> {
             let { timestamp, moodEntityId } = x;
             if(!timestamp || timestamp === "") {
-                timestamp = daysOfAWeek[i];
+                timestamp = new Date(new Date(daysOfAWeek[i]).toLocaleString('en', { timeZone: 'Asia/Manila'}))
             }
             x.timestamp = moment(timestamp).format("YYYY-MM-DD");
             return x;
@@ -387,6 +390,7 @@ export class JournalEntryService {
         if (!journalEntry) {
           throw new HttpException("Journal Entry not found", HttpStatus.NOT_FOUND);
         }
+        journalEntry.timestamp = new Date(journalEntry.timestamp.toLocaleString('en', { timeZone: 'Asia/Manila'}))
         return journalEntry;
       } catch (e) {
         throw e;

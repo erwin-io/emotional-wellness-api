@@ -71,7 +71,10 @@ export class HeartRateLogService {
             userId
         })
         .getMany() as any;
-        return result;
+        return result.map(x=> {
+          x.timestamp = new Date(x.timestamp.toLocaleString('en', {timeZone: 'Asia/Manila'}))
+          return x;
+        });
       } catch (e) {
         console.log(e);
         throw e;
@@ -99,6 +102,7 @@ export class HeartRateLogService {
         if (!heartRateLog) {
           throw new HttpException("Heart RateLog not found", HttpStatus.NOT_FOUND);
         }
+        heartRateLog.timestamp = new Date(heartRateLog.timestamp.toLocaleString('en', {timeZone: 'Asia/Manila'}));
         return heartRateLog;
       } catch (e) {
         throw e;

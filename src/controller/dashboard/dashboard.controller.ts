@@ -12,7 +12,6 @@ import { DateConstant } from "src/common/constant/date.constant";
 export class DashboardController {
   constructor(private readonly dashboardServiceService: DashboardService) {}
 
-
   @Get("/:date")
   // @UseGuards(JwtAuthGuard)
   async get(@Param("date") date: Date) {
