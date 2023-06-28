@@ -56,7 +56,7 @@ export class JournalEntryService {
         })
         .getMany() as any;
         return result.map(x=> {
-          x.timestamp = new Date(x.timestamp.toLocaleString('utc', {timeZone: 'utc'}))
+          x.timestamp = new Date(x.timestamp.toLocaleString('pht', {timeZone: 'utc'}))
           return x;
         });
       } catch (e) {
@@ -183,7 +183,7 @@ export class JournalEntryService {
         const heartRateStatus = lastEntry && lastEntry.user && lastEntry.heartRateLog ? await this.heartRateLogService.getHeartRateStatus(lastEntry.user.userId, Number(lastEntry.heartRateLog.value)) : null;
         return {
             ...mood,
-            timestamp: lastEntry ? new Date(lastEntry.timestamp.toLocaleString('utc', {timeZone: 'utc'})) : null,
+            timestamp: lastEntry ? new Date(lastEntry.timestamp.toLocaleString('pht', {timeZone: 'utc'})) : null,
             heartRate: lastEntry ? lastEntry.heartRateLog.value : null,
             lastHeartRateLogId: lastEntry ? lastEntry.heartRateLog.heartRateLogId : null,
             ...heartRateStatus,
@@ -351,7 +351,7 @@ export class JournalEntryService {
         return result.map((x:any = {moodEntityId: null } as any, i)=> {
             let { timestamp, moodEntityId } = x;
             if(!timestamp || timestamp === "") {
-                timestamp = new Date(new Date(daysOfAWeek[i]).toLocaleString('utc', { timeZone: 'utc'}))
+                timestamp = new Date(new Date(daysOfAWeek[i]).toLocaleString('pht', { timeZone: 'utc'}))
             }
             x.timestamp = moment(timestamp).format("YYYY-MM-DD");
             return x;
@@ -390,7 +390,7 @@ export class JournalEntryService {
         if (!journalEntry) {
           throw new HttpException("Journal Entry not found", HttpStatus.NOT_FOUND);
         }
-        journalEntry.timestamp = new Date(journalEntry.timestamp.toLocaleString('utc', { timeZone: 'utc'}))
+        journalEntry.timestamp = new Date(journalEntry.timestamp.toLocaleString('pht', { timeZone: 'utc'}))
         return journalEntry;
       } catch (e) {
         throw e;
@@ -403,7 +403,6 @@ export class JournalEntryService {
             let journalEntry = new JournalEntry();
             journalEntry.notes = createJournalEntryDto.notes;
             const { date, locale, timeZone } = createJournalEntryDto.timestamp;
-            // journalEntry.timestamp = new Date(date.toLocaleString(locale, { timeZone }));
             journalEntry.timestamp = await entityManager.query("select (now() AT TIME ZONE '" + timeZone + "'::text) as timestamp").then(res=> {
               return res[0]['timestamp'];
             });
