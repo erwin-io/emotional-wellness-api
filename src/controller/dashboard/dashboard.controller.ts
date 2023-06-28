@@ -12,6 +12,21 @@ import { DateConstant } from "src/common/constant/date.constant";
 export class DashboardController {
   constructor(private readonly dashboardServiceService: DashboardService) {}
 
+  @Get("timeZone")
+  // @UseGuards(JwtAuthGuard)
+  async timeZone() {
+    const res: CustomResponse = {};
+    try {
+      res.data = await this.dashboardServiceService.timeZone();
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+  
   @Get("/:date")
   // @UseGuards(JwtAuthGuard)
   async get(@Param("date") date: Date) {
