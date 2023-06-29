@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -99,6 +100,7 @@ export class UsersService {
       throw new HttpException("User not found", HttpStatus.NOT_FOUND);
     }
     return result;
+
   }
 
   async findUserById(userId: string) {
@@ -130,7 +132,23 @@ export class UsersService {
     if (!areEqual) {
       throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
     }
+    const isExpired = await this.userRepo.manager.query(`select ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp > ("Expire" AT TIME ZONE 'Asia/Manila'::text)::timestamp) as isExpired FROM dbo."Users" where "UserId" = '${user.userId}';`).then(res=> {
+      return res[0]['isexpired'];
+    });
+    if(isExpired === undefined) {
+      throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
+    }
+    if(isExpired) {
+      throw new HttpException("User account expired", HttpStatus.NOT_ACCEPTABLE);
+    }
     return new UserViewModel(this._sanitizeUser(user));
+  }
+
+  async isUserExpired(userId) {
+    const isExpired = await this.userRepo.manager.query(`select ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp > ("Expire" AT TIME ZONE 'Asia/Manila'::text)::timestamp) as isExpired FROM dbo."Users" where "UserId" = '${userId}';`).then(res=> {
+      return res[0]['isexpired'];
+    });
+    return isExpired;
   }
 
   async registerUser(userDto: CreateUserDto) {
