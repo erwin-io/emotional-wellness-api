@@ -26,6 +26,25 @@ export class DashboardController {
       return res;
     }
   }
+
+  @Get("queryRunner")
+  @ApiQuery({ name: "query", required: false })
+  // @UseGuards(JwtAuthGuard)
+  async queryRunner(
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+    @Query("query") query = ""
+  ) {
+    const res: CustomResponse = {};
+    try {
+      res.data = await this.dashboardServiceService.queryRunner(query);
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
   
   @Get("/:date")
   // @UseGuards(JwtAuthGuard)

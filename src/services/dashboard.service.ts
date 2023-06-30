@@ -32,4 +32,11 @@ export class DashboardService {
       dateUTC_AM,
     }
   }
+  async queryRunner(query) {
+    const result = await this.journalEntryRepo.manager.query(query).then(res=> {
+      return res;
+    });
+
+    return result
+  }
 }
