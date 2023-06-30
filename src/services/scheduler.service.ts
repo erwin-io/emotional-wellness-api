@@ -51,7 +51,15 @@ export class SchedulerService {
       const notifRes = await this.notificationService.addReminderNotification(x.userId, getTitle.value, getDescription.value, NotificationTypeEnum.JOURNAL_ENTRY);
       if(!notifRes || notifRes === undefined) {
         throw new HttpException(
-          "Notification not found",
+          "Error adding Notification",
+          HttpStatus.NOT_FOUND
+        );
+      }
+
+      const user = await this.usersService.updateJournalReminderDate(x.userId);      
+      if(!user || user === undefined) {
+        throw new HttpException(
+          "Error updating user journal reminder date",
           HttpStatus.NOT_FOUND
         );
       }

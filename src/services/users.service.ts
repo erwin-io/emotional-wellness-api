@@ -368,6 +368,22 @@ export class UsersService {
     return await this.findOne({ userId }, this.userRepo.manager);
   }
 
+  async updateJournalReminderDate(userId: string) {
+    try {
+      const lastJournalEntry = await this.userRepo.manager.query(`select now()`).then(res=> {
+        return res[0]['now'];
+      });
+  
+      await this.userRepo.update(userId, {
+        lastJournalEntry
+      });
+  
+      return await this.findOne({ userId }, this.userRepo.manager);
+    } catch(ex) {
+      throw ex;
+    }
+  }
+
   private _sanitizeUser(user: Users) {
     delete user.password;
     delete user.currentHashedRefreshToken;

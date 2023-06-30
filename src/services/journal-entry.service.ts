@@ -21,6 +21,7 @@ import { MoodEntity } from 'src/shared/entities/MoodEntity';
 import { Users } from 'src/shared/entities/Users';
 import { Repository } from 'typeorm';
 import { HeartRateLogService } from './heart-rate-log.service';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class JournalEntryService {
@@ -30,6 +31,7 @@ export class JournalEntryService {
       @InjectRepository(JournalEntryActivity)
       private readonly journalEntryActivityRepo: Repository<JournalEntryActivity>,
       private heartRateLogService: HeartRateLogService,
+      private usersService: UsersService,
     ) {}
   
     async findByDate(userId: string = "0", dateFrom: Date, dateTo: Date) {
@@ -415,15 +417,20 @@ export class JournalEntryService {
               throw new HttpException("Heart rate not found", HttpStatus.NOT_FOUND);
             }
             journalEntry = await entityManager.save(JournalEntry, journalEntry);
-            let user = new Users();
-            user.lastJournalEntry = await entityManager.query(`select now()`).then(res=> {
-              return res[0]['now'];
-            });
-            user = await entityManager.save(Users, user);
-            if(!user) {
-              throw new HttpException("Error updating user last journal entry", HttpStatus.NOT_FOUND);
+              
+            if(!journalEntry || journalEntry === undefined) {
+              throw new HttpException(
+                "Error saving journal entry",
+                HttpStatus.NOT_FOUND
+              );
             }
-            journalEntry = await entityManager.save(JournalEntry, journalEntry);
+            const user = await this.usersService.updateJournalReminderDate(userId);      
+            if(!user || user === undefined) {
+              throw new HttpException(
+                "Error updating user journal reminder date",
+                HttpStatus.NOT_FOUND
+              );
+            }
             return await entityManager.findOne(JournalEntry, {
                 where: {
                     journalEntryId: journalEntry.journalEntryId,
