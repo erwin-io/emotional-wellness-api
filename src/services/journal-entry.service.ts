@@ -415,6 +415,15 @@ export class JournalEntryService {
               throw new HttpException("Heart rate not found", HttpStatus.NOT_FOUND);
             }
             journalEntry = await entityManager.save(JournalEntry, journalEntry);
+            let user = new Users();
+            user.lastJournalEntry = await entityManager.query(`select now()`).then(res=> {
+              return res[0]['now'];
+            });
+            user = await entityManager.save(Users, user);
+            if(!user) {
+              throw new HttpException("Error updating user last journal entry", HttpStatus.NOT_FOUND);
+            }
+            journalEntry = await entityManager.save(JournalEntry, journalEntry);
             return await entityManager.findOne(JournalEntry, {
                 where: {
                     journalEntryId: journalEntry.journalEntryId,

@@ -20,7 +20,10 @@ export class JournalEntry {
   @Column("character varying", { name: "Notes" })
   notes: string;
 
-  @Column("timestamp with time zone", { name: "Timestamp" })
+  @Column("timestamp with time zone", {
+    name: "Timestamp",
+    default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+  })
   timestamp: Date;
 
   @ManyToOne(() => EntityStatus, (entityStatus) => entityStatus.journalEntries)

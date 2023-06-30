@@ -10,12 +10,12 @@ import { SchedulerService } from "src/services/scheduler.service";
 export class SchedulerController {
   constructor(private readonly schedulerService: SchedulerService) {}
   
-  @Post("runNotificaiton")
-  @UseGuards(JwtAuthGuard)
-  public async runNotificaiton() {
+  @Post("runReminder")
+  // @UseGuards(JwtAuthGuard)
+  public async runReminder() {
     const res: CustomResponse = {};
     try {
-      // res.data = await this.schedulerService.runNotificaiton();
+      res.data = await this.schedulerService.runReminder();
       res.success = true;
       return res;
     } catch (e) {

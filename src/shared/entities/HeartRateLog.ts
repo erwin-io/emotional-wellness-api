@@ -16,7 +16,10 @@ export class HeartRateLog {
   @PrimaryGeneratedColumn({ type: "bigint", name: "HeartRateLogId" })
   heartRateLogId: string;
 
-  @Column("timestamp without time zone", { name: "Timestamp" })
+  @Column("timestamp with time zone", {
+    name: "Timestamp",
+    default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+  })
   timestamp: Date;
 
   @Column("character varying", { name: "Value" })

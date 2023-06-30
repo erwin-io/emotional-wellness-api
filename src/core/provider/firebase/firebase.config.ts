@@ -1,4 +1,4 @@
-import * as firebaseConfig from "./tailor-booking-app-firebase-adminsdk-m7323-e75f6eb201.json";
+import * as firebaseConfig from "./emotional-wellness-9969b-firebase-adminsdk-905uy-12fcc13564.json";
 
 export default {
   type: firebaseConfig.type,

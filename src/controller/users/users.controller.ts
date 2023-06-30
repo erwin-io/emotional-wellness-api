@@ -25,7 +25,12 @@ import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { extname } from "path";
 import { unlinkSync } from "fs";
-import { UpdateFirebaseToken, UpdatePasswordDto, UpdateProfilePictureDto, UpdateUserDto } from "src/core/dto/users/user.update.dto";
+import {
+  UpdateFirebaseToken,
+  UpdatePasswordDto,
+  UpdateProfilePictureDto,
+  UpdateUserDto,
+} from "src/core/dto/users/user.update.dto";
 
 @ApiTags("users")
 @Controller("users")
@@ -34,7 +39,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get(":id")
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") userId: string) {
     const res: CustomResponse = {};
     try {

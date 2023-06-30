@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReminderService } from './reminder.service';
+import { SystemConfigService } from './system-config.service';
 
-describe('ReminderService', () => {
-  let service: ReminderService;
+describe('SystemConfigService', () => {
+  let service: SystemConfigService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ReminderService],
+      providers: [SystemConfigService],
     }).compile();
 
-    service = module.get<ReminderService>(ReminderService);
+    service = module.get<SystemConfigService>(SystemConfigService);
   });
 
   it('should be defined', () => {

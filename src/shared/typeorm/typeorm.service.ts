@@ -9,7 +9,6 @@ import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Messages } from "../entities/Messages";
 import { Notifications } from "../entities/Notifications";
 import { GatewayConnectedUsers } from "../entities/GatewayConnectedUsers";
-import { Reminder } from "../entities/Reminder";
 import { Files } from "../entities/Files";
 import { UserProfilePic } from "../entities/UserProfilePic";
 import { UserActivityType } from "../entities/UserActivityType";
@@ -19,6 +18,8 @@ import { ActivityType } from "../entities/ActivityType";
 import { MoodEntity } from "../entities/MoodEntity";
 import { HeartRateLog } from "../entities/HeartRateLog";
 import { JournalEntryActivity } from "../entities/JournalEntryActivity";
+import { SystemConfig } from "../entities/SystemConfig";
+import { NotificationType } from "../entities/NotificationType";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -41,7 +42,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Notifications,
         Messages,
         GatewayConnectedUsers,
-        Reminder,
         Files,
         UserProfilePic,
         UserActivityType,
@@ -50,7 +50,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ActivityType,
         MoodEntity,
         JournalEntryActivity,
-        HeartRateLog
+        HeartRateLog,
+        SystemConfig,
+        NotificationType,
       ],
       synchronize: false,// never use TRUE in production!
       ssl: ssl.toLocaleLowerCase().includes("true"),

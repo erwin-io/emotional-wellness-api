@@ -10,11 +10,12 @@ import { FileModule } from "./controller/file/file.module";
 import { DashboardModule } from "./controller/dashboard/dashboard.module";
 import { FirebaseProviderModule } from "./core/provider/firebase/firebase-provider.module";
 import * as Joi from "@hapi/joi";
-import { UserActivityLogModule } from './controller/user-activity-log/user-activity-log.module';
+import { UserActivityLogModule } from "./controller/user-activity-log/user-activity-log.module";
 import { JournalEntryModule } from "./controller/journal-entry/journal-entry.module";
-import { HeartRateLogModule } from './controller/heart-rate-log/heart-rate-log.module';
-import { MoodSentimentService } from './services/mood-sentiment.service';
-import { MoodSentimentModule } from './controller/mood-sentiment/mood-sentiment.module';
+import { HeartRateLogModule } from "./controller/heart-rate-log/heart-rate-log.module";
+import { MoodSentimentModule } from "./controller/mood-sentiment/mood-sentiment.module";
+import { SystemConfigModule } from "./controller/system-config/system-config.module";
+import { SchedulerModule } from "./controller/scheduler/scheduler.module";
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 @Module({
   imports: [
@@ -34,7 +35,9 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     UserActivityLogModule,
     JournalEntryModule,
     HeartRateLogModule,
-    MoodSentimentModule
+    MoodSentimentModule,
+    SystemConfigModule,
+    SchedulerModule,
   ],
   providers: [AppService],
   controllers: [],

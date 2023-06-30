@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Notifications } from "src/shared/entities/Notifications";
 import { Repository } from "typeorm";
 import { IPaginationOptions, paginate } from "nestjs-typeorm-paginate";
+import { NotificationTypeEnum } from "src/common/enums/notification-type.enum";
+import { NotificationType } from "src/shared/entities/NotificationType";
 
 @Injectable()
 export class NotificationService {
@@ -72,5 +75,21 @@ export class NotificationService {
       .where("u.userId = :userId", { userId })
       .andWhere("n.isRead = :isRead", { isRead });
     return { total: await queryBuilder.getCount() };
+  }
+  
+  async addReminderNotification(userId: string, title: string, description: string, notificationTypeId: NotificationTypeEnum) {
+    return await this.notificationsRepo.manager.transaction(
+      async (entityManager) => {
+        let notification = new Notifications();
+        notification.userId = userId;
+        notification.title = title;
+        notification.description = description;
+        notification.notificationType = await entityManager.findOneBy(NotificationType, {
+          notificationTypeId: notificationTypeId.toString()
+        });
+        notification = await entityManager.save(Notifications, notification);
+        return notification;
+      }
+    );
   }
 }

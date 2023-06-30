@@ -5,7 +5,7 @@ import { DashboardController } from "./dashboard.controller";
 import { JournalEntry } from "src/shared/entities/JournalEntry";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([JournalEntry])],
+  imports: [],
   controllers: [DashboardController],
   providers: [DashboardService],
   exports: [DashboardService],

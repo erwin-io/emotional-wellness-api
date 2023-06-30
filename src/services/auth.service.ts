@@ -1,3 +1,7 @@
+/* eslint-disable no-var */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable prettier/prettier */
 import { Users } from "../shared/entities/Users";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from "../services/users.service";

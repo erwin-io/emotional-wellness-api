@@ -58,6 +58,19 @@ export class Users {
   @Column("text", { name: "FirebaseToken", nullable: true })
   firebaseToken: string | null;
 
+  @Column("timestamp with time zone", {
+    name: "Expire",
+    default: () =>
+      "((now() AT TIME ZONE 'Asia/Manila') + '06:00:00'::interval)",
+  })
+  expire: Date;
+
+  @Column("timestamp with time zone", {
+    name: "LastJournalEntry",
+    default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+  })
+  lastJournalEntry: Date;
+
   @OneToMany(
     () => GatewayConnectedUsers,
     (gatewayConnectedUsers) => gatewayConnectedUsers.user
