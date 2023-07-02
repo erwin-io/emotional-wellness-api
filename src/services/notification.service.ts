@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { IPaginationOptions, paginate } from "nestjs-typeorm-paginate";
 import { NotificationTypeEnum } from "src/common/enums/notification-type.enum";
 import { NotificationType } from "src/shared/entities/NotificationType";
+import { Users } from "src/shared/entities/Users";
 
 @Injectable()
 export class NotificationService {
@@ -13,16 +14,14 @@ export class NotificationService {
     @InjectRepository(Notifications)
     private readonly notificationsRepo: Repository<Notifications>
   ) {}
-  async getAllByPeopleIdPage(peopleId: string, options: IPaginationOptions) {
+  async getAllByUserIdPage(userId: string, options: IPaginationOptions) {
     const queryBuilder = this.notificationsRepo.manager
       .createQueryBuilder()
       .select("n")
       .from(Notifications, "n")
-      .leftJoinAndSelect("n.reservation", "r")
-      .leftJoinAndSelect("r.reservationStatus", "rs")
-      .leftJoinAndSelect("r.reservationLevel", "rl")
-      .leftJoinAndSelect("n.people", "p")
-      .where("p.peopleId = :peopleId", { peopleId });
+      .leftJoinAndSelect("n.notificationType", "nt")
+      .leftJoinAndSelect("n.user", "u")
+      .where("u.userId = :userId", { userId });
     queryBuilder.orderBy("n.notificationId", "DESC"); // Or whatever you need to do
 
     return paginate<Notifications>(queryBuilder, options);
@@ -34,7 +33,7 @@ export class NotificationService {
         async (entityManager) => {
           const notification = await entityManager.findOne(Notifications, {
             where: { notificationId: dto.notificationId },
-            relations: ["people"],
+            relations: ["user"],
           });
           if (!notification) {
             throw new HttpException(
@@ -50,10 +49,10 @@ export class NotificationService {
             .createQueryBuilder()
             .select("n")
             .from(Notifications, "n")
-            .leftJoinAndSelect("n.reservation", "r")
+            .leftJoinAndSelect("n.notificationType", "nt")
             .leftJoinAndSelect("n.user", "u")
             .where("u.userId = :userId", {
-              userId: notification.userId,
+              userId: notification.user.userId,
             })
             .andWhere("n.isRead = :isRead", { isRead });
           return { total: await queryBuilder.getCount() };
@@ -70,7 +69,7 @@ export class NotificationService {
       .createQueryBuilder()
       .select("n")
       .from(Notifications, "n")
-      .leftJoinAndSelect("n.reservation", "r")
+      .leftJoinAndSelect("n.notificationType", "nt")
       .leftJoinAndSelect("n.user", "u")
       .where("u.userId = :userId", { userId })
       .andWhere("n.isRead = :isRead", { isRead });
@@ -81,7 +80,9 @@ export class NotificationService {
     return await this.notificationsRepo.manager.transaction(
       async (entityManager) => {
         let notification = new Notifications();
-        notification.userId = userId;
+        notification.user = await entityManager.findOneBy(Users, {
+          userId
+        });
         notification.title = title;
         notification.description = description;
         notification.notificationType = await entityManager.findOneBy(NotificationType, {

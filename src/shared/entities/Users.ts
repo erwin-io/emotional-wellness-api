@@ -11,6 +11,8 @@ import {
 import { GatewayConnectedUsers } from "./GatewayConnectedUsers";
 import { HeartRateLog } from "./HeartRateLog";
 import { JournalEntry } from "./JournalEntry";
+import { Notifications } from "./Notifications";
+import { Pet } from "./Pet";
 import { UserActivityLog } from "./UserActivityLog";
 import { UserProfilePic } from "./UserProfilePic";
 import { EntityStatus } from "./EntityStatus";
@@ -82,6 +84,9 @@ export class Users {
 
   @OneToMany(() => JournalEntry, (journalEntry) => journalEntry.user)
   journalEntries: JournalEntry[];
+
+  @OneToMany(() => Notifications, (notifications) => notifications.user)
+  notifications: Notifications[];
 
   @OneToMany(() => UserActivityLog, (userActivityLog) => userActivityLog.user)
   userActivityLogs: UserActivityLog[];

@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SystemConfigDto } from 'src/core/dto/sysyem-config/sysyem-config.update.dto';
+import { SystemConfigDto } from 'src/core/dto/system-config/system-config.update.dto';
 import { SystemConfig } from 'src/shared/entities/SystemConfig';
 import { Repository } from 'typeorm';
 

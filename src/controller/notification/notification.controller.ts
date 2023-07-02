@@ -22,8 +22,8 @@ import { NotificationsDto } from "src/core/dto/notification/notification.dtos";
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
-  @Get("getAllByPeopleIdPage")
-  @ApiQuery({ name: "peopleId", required: false })
+  @Get("getAllByUserIdPage")
+  @ApiQuery({ name: "userId", required: false })
   @ApiQuery({
     name: "page",
     description: "page",
@@ -36,9 +36,9 @@ export class NotificationController {
     required: true,
     type: Number,
   })
-  @UseGuards(JwtAuthGuard)
-  async getAllByPeopleIdPage(
-    @Query("peopleId") peopleId: string = "",
+  // @UseGuards(JwtAuthGuard)
+  async getAllByUserIdPage(
+    @Query("userId") userId: string = "",
     @Query("page", new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit = 10
   ) {
@@ -46,13 +46,10 @@ export class NotificationController {
     try {
       page = page <= 0 ? 1 : page;
       limit = limit > 40 ? 40 : limit;
-      const result = await this.notificationService.getAllByPeopleIdPage(
-        peopleId,
-        {
-          page,
-          limit,
-        }
-      );
+      const result = await this.notificationService.getAllByUserIdPage(userId, {
+        page,
+        limit,
+      });
       res.data = result;
       res.success = true;
       return res;
@@ -65,13 +62,11 @@ export class NotificationController {
 
   @Get("getTotalUnreadByUserId")
   @ApiQuery({ name: "userId", required: false })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getTotalUnreadByUserId(@Query("userId") userId: string = "") {
     const res: CustomResponse = {};
     try {
-      res.data = await this.notificationService.getTotalUnreadByUserId(
-        userId
-      );
+      res.data = await this.notificationService.getTotalUnreadByUserId(userId);
       res.success = true;
       return res;
     } catch (e) {
@@ -82,7 +77,7 @@ export class NotificationController {
   }
 
   @Put("updateReadStatus")
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async updateReadStatus(@Body() dto: NotificationsDto) {
     const res: CustomResponse = {};
     try {

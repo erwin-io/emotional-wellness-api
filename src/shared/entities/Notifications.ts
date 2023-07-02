@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { EntityStatus } from "./EntityStatus";
+import { Users } from "./Users";
 import { NotificationType } from "./NotificationType";
 
 @Index("pk_notifications_1061578820", ["notificationId"], { unique: true })
@@ -20,9 +21,6 @@ export class Notifications {
     default: () => "(now() AT TIME ZONE 'Asia/Manila')",
   })
   date: Date;
-
-  @Column("bigint", { name: "UserId" })
-  userId: string;
 
   @Column("character varying", { name: "Title" })
   title: string;
@@ -38,6 +36,10 @@ export class Notifications {
     { name: "EntityStatusId", referencedColumnName: "entityStatusId" },
   ])
   entityStatus: EntityStatus;
+
+  @ManyToOne(() => Users, (users) => users.notifications)
+  @JoinColumn([{ name: "UserId", referencedColumnName: "userId" }])
+  user: Users;
 
   @ManyToOne(
     () => NotificationType,

@@ -3,7 +3,7 @@ import { Body, Controller, Get, Param, Put, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { CustomResponse } from "src/common/helper/customresponse.helpers";
 import { JwtAuthGuard } from "src/core/auth/jwt.auth.guard";
-import { SystemConfigDto } from "src/core/dto/sysyem-config/sysyem-config.update.dto";
+import { SystemConfigDto } from "src/core/dto/system-config/system-config.update.dto";
 import { SystemConfigService } from "src/services/system-config.service";
 
 @ApiTags("system-config")

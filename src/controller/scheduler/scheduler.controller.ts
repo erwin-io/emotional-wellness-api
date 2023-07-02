@@ -24,19 +24,4 @@ export class SchedulerController {
       return res;
     }
   }
-  
-  @Post("runAnnouncements")
-  @UseGuards(JwtAuthGuard)
-  public async runAnnouncements() {
-    const res: CustomResponse = {};
-    try {
-      // res.data = await this.schedulerService.runAnnouncements();
-      res.success = true;
-      return res;
-    } catch (e) {
-      res.success = false;
-      res.message = e.message !== undefined ? e.message : e;
-      return res;
-    }
-  }
 }
