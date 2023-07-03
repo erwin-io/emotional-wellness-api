@@ -5,43 +5,36 @@ import { FilesViewModel } from "./file.view.mode";
 
 export class UserViewModel {
   userId: string;
-  username: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  email: string;
+  name: string;
   mobileNumber: string;
-  address: string;
-  fullName: string;
   gender: GenderViewModel;
   birthDate: string;
   age: string;
   entityStatus: EntityStatusViewModel;
   userProfilePic: UserProfilePicViewModel;
+  pet: PetViewModel;
   constructor(model: Users | undefined){
     if (!model || model === null) {
       return null;
     }
     this.userId = model.userId;
-    this.username = model.username;
-    this.firstName = model.firstName;
-    this.middleName = model.middleName;
-    this.lastName = model.lastName;
-    this.email = model.email;
+    this.name = model.name;
     this.mobileNumber = model.mobileNumber;
-    this.address = model.address;
-    this.fullName =
-      this.firstName +
-      (this.middleName ? " " + this.middleName + " " : " ") +
-      this.lastName;
     this.gender = model.gender;
     this.birthDate = model.birthDate;
     this.age = model.age;
     this.entityStatus = model.entityStatus;
+    this.userProfilePic = model.userProfilePic;
+    this.pet = model.pet;
   }
 }
 export class UserProfilePicViewModel {
   userId: string;
   file: FilesViewModel;
   user: UserViewModel;
+}
+
+export class PetViewModel {
+  name: string;
+  profilePicFile: FilesViewModel;
 }

@@ -6,15 +6,17 @@ import {
   IsDateString,
   IsNumber,
   IsArray,
+  ValidateNested,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import * as moment from "moment";
+import { PetDto } from "../pet/pet.dto";
 
 export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
-  username: string;
+  mobileNumber: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -22,28 +24,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  firstName: string;
-
-  @ApiProperty()
-  @IsOptional()
-  middleName: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  lastName: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  mobileNumber: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  address: string;
+  name: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -54,4 +35,10 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   genderId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @Type(() => PetDto)
+  @ValidateNested()
+  pet: PetDto;
 }

@@ -1,5 +1,5 @@
 export interface LoginStatus {
-  username: string;
+  mobileNumber: string;
   accessToken: any;
   expiresIn: any;
 }

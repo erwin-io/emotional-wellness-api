@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsOptional,
   IsString,
+  ValidateNested,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
@@ -16,48 +17,22 @@ export class UserDto {
   userId: string;
 }
 
-export class UsernameDto extends UserDto {
+
+export class UserProfilePicDto {
   @ApiProperty()
   @IsNotEmpty()
-  username: string;
+  fileName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  data: string;
 }
 
-export class ToggleEnableDto extends UserDto {
-  @ApiProperty({ required: false, default: true })
-  @IsBoolean()
-  @Transform(
-    (value: any) =>
-      value === "true" || value === true || value === 1 || value === "1"
-  )
-  @ToBoolean()
-  enable = true;
-}
 
 export class UpdateUserDto extends UserDto {
   @ApiProperty()
   @IsNotEmpty()
-  firstName: string;
-
-  @ApiProperty()
-  @IsOptional()
-  middleName: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  lastName: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  mobileNumber: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  address: string;
+  name: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -71,7 +46,9 @@ export class UpdateUserDto extends UserDto {
 
   @ApiProperty()
   @IsOptional()
-  userProfilePic: any;
+  @Type(() => UserProfilePicDto)
+  @ValidateNested()
+  userProfilePic: UserProfilePicDto;
 }
 
 export class UpdatePasswordDto extends UserDto {

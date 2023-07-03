@@ -20,6 +20,7 @@ import { HeartRateLog } from "../entities/HeartRateLog";
 import { JournalEntryActivity } from "../entities/JournalEntryActivity";
 import { SystemConfig } from "../entities/SystemConfig";
 import { NotificationType } from "../entities/NotificationType";
+import { Pet } from "../entities/Pet";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -53,6 +54,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         HeartRateLog,
         SystemConfig,
         NotificationType,
+        Pet
       ],
       synchronize: false,// never use TRUE in production!
       ssl: ssl.toLocaleLowerCase().includes("true"),

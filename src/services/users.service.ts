@@ -23,19 +23,22 @@ import * as moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { CreateUserDto } from "src/core/dto/users/user.create.dto";
 import { UpdateProfilePictureDto, UpdateUserDto } from "src/core/dto/users/user.update.dto";
+import { EntityStatusEnum } from "src/common/enums/entity-status.enum";
+import { Pet } from "src/shared/entities/Pet";
+import { PetService } from "./pet.service";
 
 @Injectable()
 export class UsersService {
   constructor(
     private firebaseProvoder: FirebaseProvider,
-    @InjectRepository(Users) private readonly userRepo: Repository<Users>
+    @InjectRepository(Users) private readonly userRepo: Repository<Users>,
+    private readonly petService: PetService,
   ) {}
 
   async findUserByFilter(
     advanceSearch: boolean,
     keyword: string,
     userId: string,
-    username: string,
     email: string,
     mobileNumber: string,
     name: string
@@ -53,19 +56,15 @@ export class UsersService {
       );
       query = query
         .where("cast(u.userId as character varying) like :userId")
-        .andWhere("u.username like :username")
         .andWhere("u.email like :email")
         .andWhere("cast(u.mobileNumber as character varying) like :mobileNumber")
         .orderBy("u.userId", "DESC");
       params.userId = `%${userId}%`;
-      params.username = `%${username}%`;
-      params.email = `%${email}%`;
       params.mobileNumber = `%${mobileNumber}%`;
       params.name = `%${name}%`;
     } else {
       query = query
         .where("cast(u.userId as character varying) like :keyword")
-        .orWhere("u.username like :keyword")
         .orWhere("u.email like :keyword")
         .orWhere("cast(c.mobileNumber as character varying) like :keyword")
         .orWhere("COALESCE(u.firstName, '') like :keyword")
@@ -88,7 +87,10 @@ export class UsersService {
       relations: {
         userProfilePic: { file: true },
         entityStatus: true,
-        gender: true
+        gender: true,
+        pet: {
+          profilePicFile: true
+        }
       },
     });
     return user;
@@ -111,22 +113,22 @@ export class UsersService {
     return result;
   }
 
-  async findByUsername(username) {
+  async findByMobileNumber(mobileNumber) {
     const result = await this.findOne(
-      { username },
+      { mobileNumber },
       this.userRepo.manager
     );
     if (result === (null || undefined)) return null;
     return this._sanitizeUser(result.user);
   }
 
-  async findByLogin(username, password) {
+  async findByLogin(mobileNumber, password) {
     const user = await this.findOne(
-      { username },
+      { mobileNumber },
       this.userRepo.manager
     );
     if (!user) {
-      throw new HttpException("Username not found", HttpStatus.NOT_FOUND);
+      throw new HttpException("Mobile number not found", HttpStatus.NOT_FOUND);
     }
     const areEqual = await compare(user.password, password);
     if (!areEqual) {
@@ -160,37 +162,60 @@ export class UsersService {
   }
 
   async registerUser(userDto: CreateUserDto) {
-    const { username } = userDto;
+    const { mobileNumber, password, name, birthDate, genderId } = userDto;
     return await this.userRepo.manager.transaction(async (entityManager) => {
-      const userInDb = await this.findOne({ username }, entityManager);
+      const userInDb = await this.findOne({ mobileNumber }, entityManager);
       if (userInDb) {
-        throw new HttpException("Username already exist", HttpStatus.CONFLICT);
+        throw new HttpException("Mobile number already exist", HttpStatus.CONFLICT);
       }
       let user = new Users();
-      user.username = userDto.username;
-      user.password = await hash(userDto.password);
+      user.name = name;
+      user.password = await hash(password);
       user.entityStatus = new EntityStatus();
-      user.entityStatus.entityStatusId = "1";
-      user.firstName = userDto.firstName;
-      user.middleName = userDto.middleName;
-      user.lastName = userDto.lastName;
-      user.email = userDto.email;
-      user.mobileNumber = userDto.mobileNumber;
-      user.birthDate = moment(userDto.birthDate).format("YYYY-MM-DD");
-      user.age = await (await getAge(new Date(userDto.birthDate))).toString();
-      user.address = userDto.address;
+      user.entityStatus.entityStatusId = EntityStatusEnum.ACTIVE.toString();
+      user.mobileNumber = mobileNumber;
+      user.birthDate = moment(birthDate).format("YYYY-MM-DD");
+      user.age = await (await getAge(new Date(birthDate))).toString();
       user.gender = new Gender();
-      user.gender.genderId = userDto.genderId;
+      user.gender.genderId = genderId;
+
+      const newPet = new Pet();
+      const { petName, petProfilePic } = userDto.pet;
+      newPet.name = petName;
+      if (petProfilePic) {
+        const { fileName, data } = petProfilePic;
+        const newFileName: string = uuid();
+        const bucket = this.firebaseProvoder.app.storage().bucket();
+
+        let file = new Files();
+        file.fileName = `${fileName}${extname(fileName)}`;
+
+        const bucketFile = bucket.file(
+          `profile/pet/${newFileName}${extname(fileName)}`
+        );
+        const img = Buffer.from(data, "base64");
+        await bucketFile.save(img).then(async () => {
+          const url = await bucketFile.getSignedUrl({
+            action: "read",
+            expires: "03-09-2500",
+          });
+          file.url = url[0];
+          file = await entityManager.save(Files, file);
+        });
+        newPet.profilePicFile = file;
+      }
+      user.pet = newPet;
       user = await entityManager.save(Users, user);
       return await this._sanitizeUser(user);
     });
-  }
+  } 
 
   async updateUser(userDto: UpdateUserDto) {
     const userId = userDto.userId;
 
     return await this.userRepo.manager.transaction(async (entityManager) => {
-      let user: any = await this.findOne(
+      const { userId, name, birthDate, genderId } = userDto;
+      let user: Users = await this.findOne(
         {
           userId,
         },
@@ -199,16 +224,11 @@ export class UsersService {
       if (!user) {
         throw new HttpException(`User doesn't exist`, HttpStatus.NOT_FOUND);
       }
-      user.firstName = userDto.firstName;
-      user.middleName = userDto.middleName;
-      user.lastName = userDto.lastName;
-      user.email = userDto.email;
-      user.mobileNumber = userDto.mobileNumber;
-      user.birthDate = userDto.birthDate;
+      user.name = name;
+      user.birthDate = moment(birthDate).format("YYYY-MM-DD");
       user.age = await (await getAge(userDto.birthDate)).toString();
-      user.address = userDto.address;
       user.gender = new Gender();
-      user.gender.genderId = userDto.genderId;
+      user.gender.genderId = genderId;
       user = await entityManager.save(Users, user);
       return await this._sanitizeUser(user);
     });

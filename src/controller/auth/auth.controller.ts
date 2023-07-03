@@ -39,7 +39,6 @@ export class AuthController {
     }
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post("login")
   public async login(@Body() loginUserDto: LoginUserDto) {
     const res: CustomResponse = {};
@@ -54,11 +53,11 @@ export class AuthController {
     }
   }
 
-  @Get("/findByUsername/:username")
-  async findByUsername(@Param("username") username: string) {
+  @Get("/findByMobileNumber/:mobileNumber")
+  async findByMobileNumber(@Param("mobileNumber") mobileNumber: string) {
     const res: CustomResponse = {};
     try {
-      res.data = await this.authService.findByUserName(username);
+      res.data = await this.authService.findByMobileNumber(mobileNumber);
       res.success = true;
       return res;
     } catch (e) {

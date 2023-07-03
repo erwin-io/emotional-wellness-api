@@ -24,32 +24,17 @@ export class Users {
   @PrimaryGeneratedColumn({ type: "bigint", name: "UserId" })
   userId: string;
 
-  @Column("character varying", { name: "FirstName" })
-  firstName: string;
-
-  @Column("character varying", { name: "MiddleName", nullable: true })
-  middleName: string | null;
-
-  @Column("character varying", { name: "LastName" })
-  lastName: string;
-
-  @Column("character varying", { name: "Email" })
-  email: string;
+  @Column("character varying", { name: "Name" })
+  name: string;
 
   @Column("character varying", { name: "MobileNumber" })
   mobileNumber: string;
-
-  @Column("character varying", { name: "Address" })
-  address: string;
 
   @Column("date", { name: "BirthDate" })
   birthDate: string;
 
   @Column("bigint", { name: "Age" })
   age: string;
-
-  @Column("character varying", { name: "Username", length: 250 })
-  username: string;
 
   @Column("character varying", { name: "Password" })
   password: string;
@@ -87,6 +72,9 @@ export class Users {
 
   @OneToMany(() => Notifications, (notifications) => notifications.user)
   notifications: Notifications[];
+
+  @OneToOne(() => Pet, (pet) => pet.user)
+  pet: Pet;
 
   @OneToMany(() => UserActivityLog, (userActivityLog) => userActivityLog.user)
   userActivityLogs: UserActivityLog[];

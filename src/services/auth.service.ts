@@ -33,46 +33,39 @@ export class AuthService {
     return await this.usersService.registerUser(userDto);
   }
 
-  async login({ username, password }: any) {
+  async login({ mobileNumber, password }: any) {
     // find user in db
     const user = await this.usersService.findByLogin(
-      username,
+      mobileNumber,
       password
     );
 
     // generate and sign token
-    const { userId } = user;
-    const accessToken: string = await this.getAccessToken(userId);
-    const refreshToken: string = await this.getRefreshToken(userId);
-    await this.updateRefreshTokenInUser(refreshToken, userId);
     const {
-      firstName,
-      middleName,
-      lastName,
-      email,
-      mobileNumber,
-      address,
+      userId,
+      name,
       birthDate,
       age,
       gender,
-      fullName,
+      pet,
     } = user;
+    const accessToken: string = await this.getAccessToken(userId);
+    const refreshToken: string = await this.getRefreshToken(userId);
+    await this.updateRefreshTokenInUser(refreshToken, userId);
 
     return {
       userId,
-      username,
-      fullName,
-      firstName,
-      middleName,
-      lastName,
-      email,
       mobileNumber,
-      address,
+      name,
       birthDate,
       age,
       gender,
       accessToken,
       refreshToken,
+      pet: {
+        ...pet,
+        profilePicFile: pet.profilePicFile ? pet.profilePicFile.url : null
+      },
       userProfilePic: user.userProfilePic
         ? user.userProfilePic.file.url
         : null,
@@ -155,8 +148,8 @@ export class AuthService {
     }
   }
 
-  async findByUserName(username) {
-    return await this.usersService.findByUsername(username);
+  async findByMobileNumber(mobileNumber) {
+    return await this.usersService.findByMobileNumber(mobileNumber);
   }
 
   verifyJwt(jwt: string): Promise<any> {
