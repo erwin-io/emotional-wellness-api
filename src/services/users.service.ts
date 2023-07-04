@@ -154,7 +154,7 @@ export class UsersService {
   }
 
   async getUserOutdatedJournal(interval: number) {
-    const query = `select "UserId" as "userId","FirebaseToken" as "firebaseToken"  FROM dbo."Users" where ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp + interval '-${interval}sec') > ("LastJournalEntry" AT TIME ZONE 'Asia/Manila'::text)::timestamp`
+    const query = `select "UserId" as "userId","FirebaseToken" as "firebaseToken"  FROM dbo."Users" where ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp + interval '-${interval}sec') > "LastJournalEntry"`
     const users: { userId: string; firebaseToken :string; }[] = await this.userRepo.manager.query(query).then(res=> { 
       return res;
     });
