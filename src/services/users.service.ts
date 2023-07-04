@@ -178,8 +178,10 @@ export class UsersService {
       user.age = await (await getAge(new Date(birthDate))).toString();
       user.gender = new Gender();
       user.gender.genderId = genderId;
-
-      const newPet = new Pet();
+      user = await entityManager.save(Users, user);
+      
+      let newPet = new Pet();
+      newPet.user = user;
       const { petName, petProfilePic } = userDto.pet;
       newPet.name = petName;
       if (petProfilePic) {
@@ -204,8 +206,7 @@ export class UsersService {
         });
         newPet.profilePicFile = file;
       }
-      user.pet = newPet;
-      user = await entityManager.save(Users, user);
+      newPet = await entityManager.save(Pet, newPet);
       return await this._sanitizeUser(user);
     });
   } 
