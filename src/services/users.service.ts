@@ -398,11 +398,13 @@ export class UsersService {
         return res[0]['now'];
       });
   
-      await this.userRepo.update(userId, {
-        lastJournalEntry
+      return await this.userRepo.manager.transaction(async (entityManager) => {
+        const user = await entityManager.findOneBy(Users, {
+          userId,
+        });
+        user.lastJournalEntry = lastJournalEntry;
+        return await entityManager.save(Users, user);
       });
-  
-      return await this.findOne({ userId }, this.userRepo.manager);
     } catch(ex) {
       throw ex;
     }
