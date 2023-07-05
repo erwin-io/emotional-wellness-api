@@ -112,24 +112,15 @@ export class HeartRateLogService {
           const timestamp = await entityManager.query("select (now() AT TIME ZONE 'Asia/Manila'::text) as timestamp").then(res=> {
             return res[0]['timestamp'];
           });
-          const find = await this.findByDate(userId, new Date(timestamp.toUTCString()), new Date(timestamp.toUTCString()));
-          if(find && find.length > 0) {
-            heartRateLog = find[0];
-            heartRateLog.timestamp = timestamp;
-            heartRateLog.value = createHeartRateLogDto.value;
-            heartRateLog = await entityManager.save(HeartRateLog, heartRateLog);
-          } else {
-            heartRateLog = new HeartRateLog();
-            heartRateLog.timestamp = timestamp;
-            heartRateLog.value = createHeartRateLogDto.value;
-            heartRateLog.user = await entityManager.findOneBy(Users,{
-                userId
-            });
-            heartRateLog = await entityManager.save(HeartRateLog, heartRateLog);
-            delete heartRateLog.user.password;
-            delete heartRateLog.user.currentHashedRefreshToken;
-            delete heartRateLog.user.firebaseToken;
-          }
+          heartRateLog.timestamp = timestamp;
+          heartRateLog.value = createHeartRateLogDto.value;
+          heartRateLog.user = await entityManager.findOneBy(Users,{
+              userId
+          });
+          heartRateLog = await entityManager.save(HeartRateLog, heartRateLog);
+          delete heartRateLog.user.password;
+          delete heartRateLog.user.currentHashedRefreshToken;
+          delete heartRateLog.user.firebaseToken;
           return heartRateLog;
         }
       );
