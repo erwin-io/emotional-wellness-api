@@ -394,11 +394,11 @@ export class UsersService {
 
   async updateJournalReminderDate(userId: string) {
     try {
-      const lastJournalEntry = await this.userRepo.manager.query(`select now()`).then(res=> {
-        return res[0]['now'];
-      });
-  
       return await this.userRepo.manager.transaction(async (entityManager) => {
+        const lastJournalEntry = await entityManager.query("select (now() AT TIME ZONE 'Asia/Manila'::text) as timestamp").then(res=> {
+          return res[0]['timestamp'];
+        });
+    
         const user = await entityManager.findOneBy(Users, {
           userId,
         });
