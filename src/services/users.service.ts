@@ -8,6 +8,8 @@ import {
   compare,
   hash,
   getAge,
+  AESEncrypt,
+  AESDecrypt,
 } from "../common/utils/utils";
 import { Users } from "../shared/entities/Users";
 import { Gender } from "../shared/entities/Gender";
@@ -130,7 +132,7 @@ export class UsersService {
     if (!user) {
       throw new HttpException("Mobile number not found", HttpStatus.NOT_FOUND);
     }
-    const areEqual = await compare(user.password, password);
+    const areEqual = await AESDecrypt(password) === await AESDecrypt(password);
     if (!areEqual) {
       throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
     }
@@ -170,7 +172,8 @@ export class UsersService {
       }
       let user = new Users();
       user.name = name;
-      user.password = await hash(password);
+      // user.password = await hash(password);
+      user.password = await AESEncrypt(password)
       user.entityStatus = new EntityStatus();
       user.entityStatus.entityStatusId = EntityStatusEnum.ACTIVE.toString();
       user.mobileNumber = mobileNumber;

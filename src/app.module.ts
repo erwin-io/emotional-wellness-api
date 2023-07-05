@@ -16,8 +16,7 @@ import { HeartRateLogModule } from "./controller/heart-rate-log/heart-rate-log.m
 import { MoodSentimentModule } from "./controller/mood-sentiment/mood-sentiment.module";
 import { SystemConfigModule } from "./controller/system-config/system-config.module";
 import { SchedulerModule } from "./controller/scheduler/scheduler.module";
-import { PetService } from './services/pet.service';
-import { PetModule } from './controller/pet/pet.module';
+import { PetModule } from "./controller/pet/pet.module";
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 @Module({
   imports: [

@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { getConnectionOptions, getConnection } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { RoleEnum } from "../enums/role.enum";
 import { HeartRateStatus } from "../constant/heart-rate-status.constant";
-
+import { createCipheriv, randomBytes, scrypt } from "crypto";
+import { promisify } from "util";
 
 export const toPromise = <T>(data: T): Promise<T> => {
   return new Promise<T>((resolve) => {
@@ -63,18 +65,83 @@ export const getHearRateTargetPercentage = (age, value: number) => {
   value = Number(value);
   let percent = 0;
   let avg = 0;
-  const getChart = HeartRateStatus.filter(x=>x.ageFrom >= age && age <= x.ageTo)[0];
-  if(getChart && getChart !== undefined) {
+  const getChart = HeartRateStatus.filter(
+    (x) => x.ageFrom >= age && age <= x.ageTo
+  )[0];
+  if (getChart && getChart !== undefined) {
     avg = (getChart.max + getChart.min) / 2;
   } else {
     avg = 220 - age;
   }
-  if(avg >= value && value <= (age - 220)) {
+  if (avg >= value && value <= age - 220) {
     percent = (value / avg) * 100;
-  } else if(avg < value && value <= 220)  {
+  } else if (avg < value && value <= 220) {
     percent = (avg / value) * 100;
   } else {
     percent = (value / 220) * 100;
   }
   return percent;
+};
+
+export const AESEncrypt = async (value) => {
+  // crypto module
+  const crypto = require("crypto");
+
+  const algorithm = "aes-256-cbc";
+
+  // generate 16 bytes of random data
+  const initVector = crypto.randomBytes(16);
+
+  // protected data
+  const message = value;
+
+  // secret key generate 32 bytes of random data
+  const Securitykey = crypto.randomBytes(32);
+
+  // the cipher function
+  const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
+
+  // encrypt the message
+  // input encoding
+  // output encoding
+  let encryptedData = cipher.update(message, "utf-8", "hex");
+
+  encryptedData += cipher.final("hex");
+
+  return encryptedData;
+};
+
+export const AESDecrypt = async (value) => {
+  // crypto module
+  const crypto = require("crypto");
+
+  const algorithm = "aes-256-cbc";
+
+  // generate 16 bytes of random data
+  const initVector = crypto.randomBytes(16);
+
+  // protected data
+  const message = value;
+
+  // secret key generate 32 bytes of random data
+  const Securitykey = crypto.randomBytes(32);
+
+  // the cipher function
+  const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
+
+  // encrypt the message
+  // input encoding
+  // output encoding
+  let encryptedData = cipher.update(message, "utf-8", "hex");
+
+  encryptedData += cipher.final("hex");
+
+  // the decipher function
+  const decipher = crypto.createDecipheriv(algorithm, Securitykey, initVector);
+
+  let decryptedData = decipher.update(encryptedData, "hex", "utf-8");
+
+  decryptedData += decipher.final("utf8");
+
+  return decryptedData;
 };
