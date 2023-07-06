@@ -349,8 +349,8 @@ export class UsersService {
         );
       }
 
-      (user.password = await hash(newPassword)),
-        (user = await entityManager.save(Users, user));
+      user.password = await AESEncrypt(newPassword);
+      user = await entityManager.save(Users, user);
       return this._sanitizeUser(user);
     });
   }
