@@ -5,6 +5,8 @@ import { RoleEnum } from "../enums/role.enum";
 import { HeartRateStatus } from "../constant/heart-rate-status.constant";
 import { createCipheriv, randomBytes, scrypt } from "crypto";
 import { promisify } from "util";
+import * as fs from "fs";
+import * as path from "path";
 
 export const toPromise = <T>(data: T): Promise<T> => {
   return new Promise<T>((resolve) => {
@@ -89,26 +91,29 @@ export const AESEncrypt = async (value) => {
 
   const algorithm = "aes-256-cbc";
 
-  // generate 16 bytes of random data
-  const initVector = crypto.randomBytes(16);
+  // generate 16 bytes of data
+  const initVector = crypto
+    .createHash("sha512")
+    .update(
+      fs.readFileSync(path.join(__dirname, "../../../refreshtoken.private.key"))
+    )
+    .digest("hex")
+    .substring(0, 16);
 
-  // protected data
-  const message = value;
-
-  // secret key generate 32 bytes of random data
-  const Securitykey = crypto.randomBytes(32);
+  // secret key generate 32 bytes of data
+  const Securitykey = crypto
+    .createHash("sha512")
+    .update(
+      fs.readFileSync(path.join(__dirname, "../../../refreshtoken.private.key"))
+    )
+    .digest("hex")
+    .substring(0, 32);
 
   // the cipher function
   const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
-
-  // encrypt the message
-  // input encoding
-  // output encoding
-  let encryptedData = cipher.update(message, "utf-8", "hex");
-
-  encryptedData += cipher.final("hex");
-
-  return encryptedData;
+  return Buffer.from(
+    cipher.update(value, "utf8", "hex") + cipher.final("hex")
+  ).toString("base64"); // Encrypts data and converts to hex and base64
 };
 
 export const AESDecrypt = async (value) => {
@@ -117,31 +122,28 @@ export const AESDecrypt = async (value) => {
 
   const algorithm = "aes-256-cbc";
 
-  // generate 16 bytes of random data
-  const initVector = crypto.randomBytes(16);
+  // generate 16 bytes of data
+  const initVector = crypto
+    .createHash("sha512")
+    .update(
+      fs.readFileSync(path.join(__dirname, "../../../refreshtoken.private.key"))
+    )
+    .digest("hex")
+    .substring(0, 16);
 
-  // protected data
-  const message = value;
+  // secret key generate 32 bytes of data
+  const Securitykey = crypto
+    .createHash("sha512")
+    .update(
+      fs.readFileSync(path.join(__dirname, "../../../refreshtoken.private.key"))
+    )
+    .digest("hex")
+    .substring(0, 32);
 
-  // secret key generate 32 bytes of random data
-  const Securitykey = crypto.randomBytes(32);
-
-  // the cipher function
-  const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
-
-  // encrypt the message
-  // input encoding
-  // output encoding
-  let encryptedData = cipher.update(message, "utf-8", "hex");
-
-  encryptedData += cipher.final("hex");
-
-  // the decipher function
+  const buff = Buffer.from(value, "base64");
   const decipher = crypto.createDecipheriv(algorithm, Securitykey, initVector);
-
-  let decryptedData = decipher.update(encryptedData, "hex", "utf-8");
-
-  decryptedData += decipher.final("utf8");
-
-  return decryptedData;
+  return (
+    decipher.update(buff.toString("utf8"), "hex", "utf8") +
+    decipher.final("utf8")
+  ); // Decrypts data and converts to utf8
 };

@@ -48,7 +48,8 @@ export class AuthController {
   @ApiQuery({ name: "value", required: false })
   public async decrypt(
     // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-    @Query("value") value = "") {
+    @Query("value") value = "",
+    ) {
     const res: CustomResponse = {};
     try {
       res.data = await AESDecrypt(value);

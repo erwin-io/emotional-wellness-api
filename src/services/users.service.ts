@@ -128,19 +128,19 @@ export class UsersService {
     if (!user) {
       throw new HttpException("Mobile number not found", HttpStatus.NOT_FOUND);
     }
-    const areEqual = await AESDecrypt(password) === await AESDecrypt(password);
+    const areEqual = password === await AESDecrypt(user.password);
     if (!areEqual) {
       throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
     }
-    const isExpired = await this.userRepo.manager.query(`select ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp > ("Expire" AT TIME ZONE 'Asia/Manila'::text)::timestamp) as isExpired FROM dbo."Users" where "UserId" = '${user.userId}';`).then(res=> {
-      return res[0]['isexpired'];
-    });
-    if(isExpired === undefined) {
-      throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
-    }
-    if(isExpired) {
-      throw new HttpException("User account expired", HttpStatus.NOT_ACCEPTABLE);
-    }
+    // const isExpired = await this.userRepo.manager.query(`select ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp > ("Expire" AT TIME ZONE 'Asia/Manila'::text)::timestamp) as isExpired FROM dbo."Users" where "UserId" = '${user.userId}';`).then(res=> {
+    //   return res[0]['isexpired'];
+    // });
+    // if(isExpired === undefined) {
+    //   throw new HttpException("Invalid credentials", HttpStatus.NOT_ACCEPTABLE);
+    // }
+    // if(isExpired) {
+    //   throw new HttpException("User account expired", HttpStatus.NOT_ACCEPTABLE);
+    // }
     return new UserViewModel(this._sanitizeUser(user));
   }
 
