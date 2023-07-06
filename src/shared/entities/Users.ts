@@ -12,11 +12,11 @@ import { GatewayConnectedUsers } from "./GatewayConnectedUsers";
 import { HeartRateLog } from "./HeartRateLog";
 import { JournalEntry } from "./JournalEntry";
 import { Notifications } from "./Notifications";
-import { Pet } from "./Pet";
 import { UserActivityLog } from "./UserActivityLog";
 import { UserProfilePic } from "./UserProfilePic";
 import { EntityStatus } from "./EntityStatus";
 import { Gender } from "./Gender";
+import { PetCompanion } from "./PetCompanion";
 
 @Index("pk_users_1557580587", ["userId"], { unique: true })
 @Entity("Users", { schema: "dbo" })
@@ -73,9 +73,6 @@ export class Users {
   @OneToMany(() => Notifications, (notifications) => notifications.user)
   notifications: Notifications[];
 
-  @OneToOne(() => Pet, (pet) => pet.user)
-  pet: Pet;
-
   @OneToMany(() => UserActivityLog, (userActivityLog) => userActivityLog.user)
   userActivityLogs: UserActivityLog[];
 
@@ -91,4 +88,10 @@ export class Users {
   @ManyToOne(() => Gender, (gender) => gender.users)
   @JoinColumn([{ name: "GenderId", referencedColumnName: "genderId" }])
   gender: Gender;
+
+  @ManyToOne(() => PetCompanion, (petCompanion) => petCompanion.users)
+  @JoinColumn([
+    { name: "PetCompanionId", referencedColumnName: "petCompanionId" },
+  ])
+  petCompanion: PetCompanion;
 }

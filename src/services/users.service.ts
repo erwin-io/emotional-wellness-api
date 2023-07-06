@@ -24,17 +24,15 @@ import { v4 as uuid } from "uuid";
 import * as moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { CreateUserDto } from "src/core/dto/users/user.create.dto";
-import { UpdateProfilePictureDto, UpdateUserDto } from "src/core/dto/users/user.update.dto";
+import { UpdatePetCompanionDto, UpdateProfilePictureDto, UpdateUserDto } from "src/core/dto/users/user.update.dto";
 import { EntityStatusEnum } from "src/common/enums/entity-status.enum";
-import { Pet } from "src/shared/entities/Pet";
-import { PetService } from "./pet.service";
+import { PetCompanion } from "src/shared/entities/PetCompanion";
 
 @Injectable()
 export class UsersService {
   constructor(
     private firebaseProvoder: FirebaseProvider,
-    @InjectRepository(Users) private readonly userRepo: Repository<Users>,
-    private readonly petService: PetService,
+    @InjectRepository(Users) private readonly userRepo: Repository<Users>
   ) {}
 
   async findUserByFilter(
@@ -90,9 +88,7 @@ export class UsersService {
         userProfilePic: { file: true },
         entityStatus: true,
         gender: true,
-        pet: {
-          profilePicFile: true
-        }
+        petCompanion: true
       },
     });
     return user;
@@ -156,7 +152,7 @@ export class UsersService {
   }
 
   async getUserOutdatedJournal(interval: number) {
-    const query = `select "UserId" as "userId","FirebaseToken" as "firebaseToken"  FROM dbo."Users" where ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp + interval '-${interval}sec') > "LastJournalEntry"`
+    const query = `select "UserId" as "userId","FirebaseToken" as "firebaseToken"  FROM dbo."Users" where ((now() AT TIME ZONE 'Asia/Manila'::text)::timestamp - interval '${interval}sec') > "LastJournalEntry"`
     const users: { userId: string; firebaseToken :string; }[] = await this.userRepo.manager.query(query).then(res=> { 
       return res;
     });
@@ -164,7 +160,7 @@ export class UsersService {
   }
 
   async registerUser(userDto: CreateUserDto) {
-    const { mobileNumber, password, name, birthDate, genderId } = userDto;
+    const { mobileNumber, password, name, birthDate, genderId, petCompanionId } = userDto;
     return await this.userRepo.manager.transaction(async (entityManager) => {
       const userInDb = await this.findOne({ mobileNumber }, entityManager);
       if (userInDb) {
@@ -181,35 +177,10 @@ export class UsersService {
       user.age = await (await getAge(new Date(birthDate))).toString();
       user.gender = new Gender();
       user.gender.genderId = genderId;
+      user.petCompanion = await entityManager.findOneBy(PetCompanion, {
+        petCompanionId
+      })
       user = await entityManager.save(Users, user);
-      
-      let newPet = new Pet();
-      newPet.user = user;
-      const { petName, petProfilePic } = userDto.pet;
-      newPet.name = petName;
-      if (petProfilePic) {
-        const { fileName, data } = petProfilePic;
-        const newFileName: string = uuid();
-        const bucket = this.firebaseProvoder.app.storage().bucket();
-
-        let file = new Files();
-        file.fileName = `${fileName}${extname(fileName)}`;
-
-        const bucketFile = bucket.file(
-          `profile/pet/${newFileName}${extname(fileName)}`
-        );
-        const img = Buffer.from(data, "base64");
-        await bucketFile.save(img).then(async () => {
-          const url = await bucketFile.getSignedUrl({
-            action: "read",
-            expires: "03-09-2500",
-          });
-          file.url = url[0];
-          file = await entityManager.save(Files, file);
-        });
-        newPet.profilePicFile = file;
-      }
-      newPet = await entityManager.save(Pet, newPet);
       return await this._sanitizeUser(user);
     });
   } 
@@ -399,11 +370,31 @@ export class UsersService {
           return res[0]['timestamp'];
         });
     
-        const user = await entityManager.findOneBy(Users, {
+        let user = await entityManager.findOneBy(Users, {
           userId,
         });
         user.lastJournalEntry = lastJournalEntry;
-        return await entityManager.save(Users, user);
+        user = await entityManager.save(Users, user);
+        return await this._sanitizeUser(user);
+      });
+    } catch(ex) {
+      throw ex;
+    }
+  }
+
+  async updatePetCompanion(dto: UpdatePetCompanionDto) {
+    try {
+      return await this.userRepo.manager.transaction(async (entityManager) => {
+  
+        const { userId, petCompanionId } = dto;
+        let user = await entityManager.findOneBy(Users, {
+          userId,
+        });
+        user.petCompanion = await entityManager.findOneBy(PetCompanion, {
+          petCompanionId
+        });
+        user = await entityManager.save(Users, user);
+        return await this._sanitizeUser(user);
       });
     } catch(ex) {
       throw ex;

@@ -28,6 +28,7 @@ import { unlinkSync } from "fs";
 import {
   UpdateFirebaseToken,
   UpdatePasswordDto,
+  UpdatePetCompanionDto,
   UpdateProfilePictureDto,
   UpdateUserDto,
 } from "src/core/dto/users/user.update.dto";
@@ -134,6 +135,22 @@ export class UsersController {
         updateFirebaseToken.userId,
         updateFirebaseToken.firebaseToken
       );
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
+  @Put("/updatePetCompanion")
+  @UseGuards(JwtAuthGuard)
+  async updatePetCompanion(@Body() dto: UpdatePetCompanionDto) {
+    const res: CustomResponse = {};
+    try {
+      const res: CustomResponse = {};
+      res.data = await this.userService.updatePetCompanion(dto);
       res.success = true;
       return res;
     } catch (e) {

@@ -38,7 +38,5 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @Type(() => PetDto)
-  @ValidateNested()
-  pet: PetDto;
+  petCompanionId: string;
 }

@@ -47,7 +47,7 @@ export class AuthService {
       birthDate,
       age,
       gender,
-      pet,
+      petCompanion
     } = user;
     const accessToken: string = await this.getAccessToken(userId);
     const refreshToken: string = await this.getRefreshToken(userId);
@@ -62,10 +62,7 @@ export class AuthService {
       gender,
       accessToken,
       refreshToken,
-      pet: {
-        ...pet,
-        profilePicFile: pet.profilePicFile ? pet.profilePicFile.url : null
-      },
+      petCompanion,
       userProfilePic: user.userProfilePic
         ? user.userProfilePic.file.url
         : null,

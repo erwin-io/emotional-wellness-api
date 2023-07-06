@@ -12,7 +12,7 @@ export class UserViewModel {
   age: string;
   entityStatus: EntityStatusViewModel;
   userProfilePic: UserProfilePicViewModel;
-  pet: PetViewModel;
+  petCompanion: PetCompanionViewModel;
   constructor(model: Users | undefined){
     if (!model || model === null) {
       return null;
@@ -25,7 +25,7 @@ export class UserViewModel {
     this.age = model.age;
     this.entityStatus = model.entityStatus;
     this.userProfilePic = model.userProfilePic;
-    this.pet = model.pet;
+    this.petCompanion = model.petCompanion;
   }
 }
 export class UserProfilePicViewModel {
@@ -34,7 +34,7 @@ export class UserProfilePicViewModel {
   user: UserViewModel;
 }
 
-export class PetViewModel {
+export class PetCompanionViewModel {
+  petCompanionId: string;
   name: string;
-  profilePicFile: FilesViewModel;
 }

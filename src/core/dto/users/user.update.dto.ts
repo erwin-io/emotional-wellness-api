@@ -68,3 +68,9 @@ export class UpdateProfilePictureDto extends UserDto {
   @IsOptional()
   userProfilePic: any;
 }
+
+export class UpdatePetCompanionDto extends UserDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  petCompanionId: string;
+}
