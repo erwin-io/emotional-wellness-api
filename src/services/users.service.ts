@@ -340,8 +340,8 @@ export class UsersService {
       if (!user) {
         throw new HttpException(`User doesn't exist`, HttpStatus.NOT_FOUND);
       }
-
-      const areEqual = await compare(user.password, currentPassword);
+      
+      const areEqual = currentPassword === await AESDecrypt(user.password);
       if (!areEqual) {
         throw new HttpException(
           "Password not match",
@@ -357,7 +357,7 @@ export class UsersService {
 
   async updatePassword(userId: string, password: string) {
     await this.userRepo.update(userId, {
-      password: await hash(password),
+      password: await AESEncrypt(password),
     });
 
     return await this.findOne({ userId }, this.userRepo.manager);
