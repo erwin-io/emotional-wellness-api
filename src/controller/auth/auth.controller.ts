@@ -27,6 +27,41 @@ import { AESDecrypt, AESEncrypt } from "src/common/utils/utils";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get("encrypt")
+  @ApiQuery({ name: "value", required: false })
+  public async encrypt(
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+    @Query("value") value = "") {
+    const res: CustomResponse = {};
+    try {
+      res.data = await AESEncrypt(value);
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
+  @Get("decrypt")
+  @ApiQuery({ name: "value", required: false })
+  public async decrypt(
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+    @Query("value") value = "",
+    ) {
+    const res: CustomResponse = {};
+    try {
+      res.data = await AESDecrypt(value);
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
   @Post("register")
   public async register(@Body() createUserDto: CreateUserDto) {
     const res: CustomResponse = {};
