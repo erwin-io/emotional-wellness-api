@@ -19,7 +19,7 @@
     "crons": [
       {
         "path": "/api/v1/scheduler/runReminder",
-        "schedule": "* * * * *"
+        "schedule": "1 0 * * *"
       }
     ]
 }
