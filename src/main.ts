@@ -29,7 +29,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup("swagger", app, document, {
     swaggerOptions: { defaultModelsExpandDepth: -1 },
-    swaggerUrl:
+    customCssUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css",
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
