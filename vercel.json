@@ -19,7 +19,51 @@
     "crons": [
       {
         "path": "/api/v1/scheduler/runReminder",
-        "schedule": "0 3 * * *"
+        "schedule": "0 2 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 4 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 6 * * *"
+      },
+      {
+        "path": "/api/3/scheduler/runReminder",
+        "schedule": "0 8 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 10 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 12 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 14 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 16 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 18 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 20 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 22 * * *"
+      },
+      {
+        "path": "/api/v1/scheduler/runReminder",
+        "schedule": "0 24 * * *"
       }
     ]
 }
