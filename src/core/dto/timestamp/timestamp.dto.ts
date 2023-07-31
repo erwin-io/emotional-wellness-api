@@ -3,7 +3,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type, Transform } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
-import * as moment from "moment";
+import moment from "moment";
 
 
 export class TimestampDto {

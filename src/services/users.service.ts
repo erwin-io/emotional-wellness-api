@@ -21,7 +21,7 @@ import { unlinkSync, writeFile } from "fs";
 import { Files } from "src/shared/entities/Files";
 import { extname, join } from "path";
 import { v4 as uuid } from "uuid";
-import * as moment from "moment";
+import moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { CreateUserDto } from "src/core/dto/users/user.create.dto";
 import { UpdatePetCompanionDto, UpdateProfilePictureDto, UpdateUserDto } from "src/core/dto/users/user.update.dto";

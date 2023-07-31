@@ -2,7 +2,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type, Transform } from "class-transformer";
 import { IsNotEmpty, IsNumberString, ValidateNested } from "class-validator";
-import * as moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { TimestampDto } from "../timestamp/timestamp.dto";
 

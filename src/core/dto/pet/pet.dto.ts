@@ -7,7 +7,7 @@ import {
   IsOptional,
   ValidateNested,
 } from "class-validator";
-import * as moment from "moment";
+import moment from "moment";
 
 export class PetProfilePicDto {
   @ApiProperty()

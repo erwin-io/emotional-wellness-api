@@ -97,6 +97,11 @@
     "typescript": "^4.3.5"
   },
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",

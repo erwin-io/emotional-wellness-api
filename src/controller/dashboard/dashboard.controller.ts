@@ -3,7 +3,7 @@ import { ApiTags, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 import { CustomResponse } from "src/common/helper/customresponse.helpers";
 import { JwtAuthGuard } from "src/core/auth/jwt.auth.guard";
 import { DashboardService } from "src/services/dashboard.service";
-import * as moment from 'moment';
+import moment from "moment"
 import { DateConstant } from "src/common/constant/date.constant";
 
 @Controller("dashboard")

@@ -4,7 +4,6 @@ import {
   MessagingDevicesResponse,
   NotificationMessagePayload,
 } from "firebase-admin/lib/messaging/messaging-api";
-import * as moment from "moment";
 import {
   NotificationTitleConstant,
   NotificationDescriptionConstant,

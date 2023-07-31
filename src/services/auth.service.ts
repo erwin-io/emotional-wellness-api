@@ -16,7 +16,6 @@ import { UserTypeEnum } from "src/common/enums/user-type.enum";
 import { NotificationService } from "./notification.service";
 import { UserActivityLogService } from "./user-activity-log.service";
 import { ActivityTypeEnum } from "src/common/enums/activity-type.enum";
-import * as moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { CreateUserDto } from "src/core/dto/users/user.create.dto";
 

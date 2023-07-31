@@ -3,9 +3,8 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { CustomResponse } from "src/common/helper/customresponse.helpers";
 import { UserActivityLogService } from "src/services/user-activity-log.service";
 import { Stream } from "stream";
-import * as moment from "moment";
+import moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
-
 @ApiTags("activity-log")
 @Controller("activity-log")
 export class UserActivityLogController {

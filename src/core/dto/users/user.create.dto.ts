@@ -10,7 +10,7 @@ import {
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
-import * as moment from "moment";
+import moment from "moment";
 import { PetDto } from "../pet/pet.dto";
 
 export class CreateUserDto {

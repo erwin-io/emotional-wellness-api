@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import * as moment from "moment";
+import moment from "moment";
 import { DateConstant } from "src/common/constant/date.constant";
 import { ActivityTypeEnum } from "src/common/enums/activity-type.enum";
 import { EntityStatusEnum } from "src/common/enums/entity-status.enum";
