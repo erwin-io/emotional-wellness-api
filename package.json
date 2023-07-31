@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "prod:build": "rimraf dist && nest build",
-    "prod:install": "npm install -D @nestjs/cli && npm install --force",
+    "prod:install": "npm install -D @nestjs/cli && npm install --legacy-peer-deps",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
