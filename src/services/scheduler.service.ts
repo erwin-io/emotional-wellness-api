@@ -40,27 +40,29 @@ export class SchedulerService {
       await this.usersService.getUserOutdatedJournal(Number(getInterval.value));
 
     getUserOutdatedJournal.forEach(async (x) => {
-      const res = await this.firebaseSendToDevice(
-        x.firebaseToken,
-        getTitle.value,
-        getDescription.value
-      );
-      console.log(res);
-
-      const notifRes = await this.notificationService.addReminderNotification(x.userId, getTitle.value, getDescription.value, NotificationTypeEnum.JOURNAL_ENTRY);
-      if(!notifRes || notifRes === undefined) {
-        throw new HttpException(
-          "Error adding Notification",
-          HttpStatus.NOT_FOUND
+      if(x.firebaseToken && x.firebaseToken !== "") {
+        const res = await this.firebaseSendToDevice(
+          x.firebaseToken,
+          getTitle.value,
+          getDescription.value
         );
-      }
-
-      const user = await this.usersService.updateJournalReminderDate(x.userId);      
-      if(!user || user === undefined) {
-        throw new HttpException(
-          "Error updating user journal reminder date",
-          HttpStatus.NOT_FOUND
-        );
+        console.log(res);
+  
+        const notifRes = await this.notificationService.addReminderNotification(x.userId, getTitle.value, getDescription.value, NotificationTypeEnum.JOURNAL_ENTRY);
+        if(!notifRes || notifRes === undefined) {
+          throw new HttpException(
+            "Error adding Notification",
+            HttpStatus.NOT_FOUND
+          );
+        }
+  
+        const user = await this.usersService.updateJournalReminderDate(x.userId);      
+        if(!user || user === undefined) {
+          throw new HttpException(
+            "Error updating user journal reminder date",
+            HttpStatus.NOT_FOUND
+          );
+        }
       }
     });
 

@@ -1,3 +1,4 @@
+import { Get, All } from "@nestjs/common";
 import { Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CustomResponse } from "src/common/helper/customresponse.helpers";
@@ -10,7 +11,7 @@ import { SchedulerService } from "src/services/scheduler.service";
 export class SchedulerController {
   constructor(private readonly schedulerService: SchedulerService) {}
   
-  @Post("runReminder")
+  @All("runReminder")
   // @UseGuards(JwtAuthGuard)
   public async runReminder() {
     const res: CustomResponse = {};
