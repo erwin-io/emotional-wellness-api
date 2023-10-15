@@ -15,15 +15,5 @@
               "Access-Control-Allow-Origin": "*"
             }
         }
-    ],
-    "crons": [
-      {
-        "path": "/api/v1/scheduler/runReminder",
-        "schedule": "0 1 * * *"
-      },
-      {
-        "path": "/api/v1/scheduler/runReminder",
-        "schedule": "0 11 * * *"
-      }
     ]
 }
